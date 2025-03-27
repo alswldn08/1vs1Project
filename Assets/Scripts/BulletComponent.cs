@@ -7,7 +7,6 @@ public class BulletComponent : MonoBehaviour
     [Header("총알 격발")]
     public GameObject bulletPrefab;
     public Transform firePoint;
-    public float bulletSpeed = 10f;
 
     [Header("재장전")]
     public int maxBullet = 50;
@@ -15,10 +14,13 @@ public class BulletComponent : MonoBehaviour
     public float reloadTime = 2f;
     public bool isReloading = false;
 
+    private UIManager uiManager;
+
 
     void Start()
     {
         currentBullet = maxBullet;
+        uiManager = GetComponent<UIManager>();
     }
 
     void Update()
@@ -36,6 +38,7 @@ public class BulletComponent : MonoBehaviour
 
     void Shoot()
     {
+
         if (isReloading)
             return;
 
@@ -52,6 +55,7 @@ public class BulletComponent : MonoBehaviour
         {
             Debug.Log("재장전 하세요");
         }
+
     }
 
     private IEnumerator Reload()

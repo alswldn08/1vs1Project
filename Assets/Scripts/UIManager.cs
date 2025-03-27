@@ -14,8 +14,8 @@ public class UIManager : MonoBehaviour
         countBullet = gameObject.GetComponent<Text>();
 
     }
-
-    void Update()
+    
+    public void CountBullet()
     {
         countBullet.text = "남은 총알" + bulletComponent.currentBullet;
     }
