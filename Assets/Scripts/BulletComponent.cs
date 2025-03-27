@@ -20,7 +20,7 @@ public class BulletComponent : MonoBehaviour
     void Start()
     {
         currentBullet = maxBullet;
-        uiManager = GetComponent<UIManager>();
+        uiManager = FindObjectOfType<UIManager>();
     }
 
     void Update()
@@ -48,8 +48,8 @@ public class BulletComponent : MonoBehaviour
 
             float direction = transform.eulerAngles.y == 180 ? -1f : 1f;
             bullet.GetComponent<Bullet>().SetDirection(direction);
-
             currentBullet--;
+            uiManager.CountBullet();
         }
         else
         {
@@ -71,5 +71,6 @@ public class BulletComponent : MonoBehaviour
         Debug.Log("재장전 완료!");
 
         isReloading = false;
+        uiManager.CountBullet();
     }
 }

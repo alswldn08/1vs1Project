@@ -10,13 +10,16 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
-        bulletComponent = GetComponent<BulletComponent>();
-        countBullet = gameObject.GetComponent<Text>();
+        bulletComponent = FindObjectOfType<BulletComponent>();
+        CountBullet();
 
     }
     
     public void CountBullet()
     {
-        countBullet.text = "남은 총알" + bulletComponent.currentBullet;
+        if(bulletComponent != null && countBullet != null)
+        {
+            countBullet.text = bulletComponent.currentBullet + "/50";
+        }
     }
 }
