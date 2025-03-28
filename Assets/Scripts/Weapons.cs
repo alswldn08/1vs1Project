@@ -16,14 +16,9 @@ public enum SubWeapon
 }
 public class Weapons : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public MainWeapon mainWeapon;
+    public SubWeapon subWeapon;
     void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
     {
         
     }
