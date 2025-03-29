@@ -5,21 +5,25 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    private BulletComponent bulletComponent;
+    private Weapon weapon;
     public Text countBullet;
+    public Data data;
+
+    //public Text countBullet1;
 
     void Start()
     {
-        bulletComponent = FindObjectOfType<BulletComponent>();
+        weapon = FindObjectOfType<Weapon>();
         CountBullet();
-
     }
     
     public void CountBullet()
     {
-        if(bulletComponent != null && countBullet != null)
+        if(weapon != null && countBullet != null)
         {
-            countBullet.text = bulletComponent.currentBullet + "/50";
+            
+            countBullet.text = weapon.data.currentBullet + "/" + weapon.data.maxBullet;
+            //countBullet1.text = bulletComponent.currentBullet + "/7";
         }
     }
 }

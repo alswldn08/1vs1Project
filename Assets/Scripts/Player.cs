@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 {
     public float speed = 6f;
     private Rigidbody2D rb;
-    private BulletComponent bulletComponent;
+    private Weapon weapon;
 
     [SerializeField]
     private float power;
@@ -17,12 +17,14 @@ public class Player : MonoBehaviour
     [SerializeField]
     LayerMask isLayer;
 
+    public Data data;
+
     bool isGround;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        bulletComponent = GetComponent<BulletComponent>();
+        weapon = GetComponent<Weapon>();
     }
 
     private void Update()
@@ -38,7 +40,7 @@ public class Player : MonoBehaviour
     {
         float move = 0f;
 
-        if (bulletComponent != null && bulletComponent.isReloading)
+        if (weapon.data.isReloading)
         {
             speed = 3f;
         }
