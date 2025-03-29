@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rifle : Weapon
+public class Glock : Weapon
 {
-
     protected override void Start()
     {
         InitSetting();
@@ -13,7 +12,7 @@ public class Rifle : Weapon
     }
     public override void InitSetting()
     {
-        data.maxBullet = 50;
+        data.maxBullet = 7;
         data.reloadTime = 2;
         data.isReloading = false;
 

@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     private Weapon weapon;
-    public Text countBullet;
+    public Text countRifle;
+    public Text countGlock;
     public Data data;
 
     //public Text countBullet1;
@@ -19,11 +20,15 @@ public class UIManager : MonoBehaviour
     
     public void CountBullet()
     {
-        if(weapon != null && countBullet != null)
+        if(weapon != null && countRifle != null)
         {
-            
-            countBullet.text = weapon.data.currentBullet + "/" + weapon.data.maxBullet;
-            //countBullet1.text = bulletComponent.currentBullet + "/7";
+
+            countRifle.text = weapon.data.currentBullet + "/" + weapon.data.maxBullet;
+        }
+
+        if(weapon != null && countGlock != null)
+        {
+            countGlock.text = weapon.data.currentBullet + "/" + weapon.data.maxBullet;
         }
     }
 }

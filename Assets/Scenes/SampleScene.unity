@@ -216,6 +216,7 @@ GameObject:
   - component: {fileID: 35827504}
   - component: {fileID: 35827507}
   - component: {fileID: 35827510}
+  - component: {fileID: 35827512}
   - component: {fileID: 35827511}
   m_Layer: 0
   m_Name: Player
@@ -396,7 +397,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 370b9facea2e9fc4d9cfc3397a9ae0b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weapon: {fileID: 35827511}
+  weapon: {fileID: 35827512}
   bulletPrefab: {fileID: 7872527466892438945, guid: 0a37e60fde9440f4094c526f4eac8237, type: 3}
   firePoint: {fileID: 379702877}
 --- !u!114 &35827511
@@ -409,6 +410,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 649f05c55a82283429fd2411bfacd8a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &35827512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 35827503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a1875c05cbb28c4d97be41b19836f68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &121182764
@@ -972,7 +985,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b3243dd32a76f94cb3cffd61759cf9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countBullet: {fileID: 638339651}
+  countRifle: {fileID: 638339651}
+  countGlock: {fileID: 28110536}
 --- !u!4 &834715780
 Transform:
   m_ObjectHideFlags: 0
