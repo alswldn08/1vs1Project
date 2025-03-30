@@ -11,6 +11,7 @@ public class WeaponController : MonoBehaviour
     private Rifle rifle;
     private Glock glock;
     private UIManager uiManager;
+    private Player player;
 
     void Start()
     {
@@ -18,6 +19,7 @@ public class WeaponController : MonoBehaviour
         rifle = GetComponent<Rifle>();
         glock = GetComponent<Glock>();
         uiManager = FindObjectOfType<UIManager>();
+        player = FindObjectOfType<Player>();
 
         // UI 초기화
         uiManager.UpdateWeapon(weapon);
@@ -27,17 +29,31 @@ public class WeaponController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1) && rifle != null)
         {
-            weapon = rifle;
-            Debug.Log("라이플 장착");
-            uiManager.UpdateWeapon(weapon); // UI 업데이트 추가
+            ChangeWeapon(rifle);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2) && glock != null)
         {
-            weapon = glock;
-            Debug.Log("글록 장착");
-            uiManager.UpdateWeapon(weapon); // UI 업데이트 추가
+            ChangeWeapon(glock);
+        }
+
+        if (Input.GetKeyDown(KeyCode.R) && weapon.data.currentBullet < weapon.data.maxBullet && !weapon.data.isReloading)
+        {
+            StartCoroutine(weapon.Reload()); 
         }
 
         weapon.Shoot(bulletPrefab, firePoint);
+    }
+
+    private void ChangeWeapon(Weapon newWeapon)
+    {
+        weapon = newWeapon;
+        Debug.Log($"{weapon.GetType().Name} 장착");
+
+        uiManager.UpdateWeapon(weapon);
+
+        if (player != null)
+        {
+            player.SetWeapon(weapon);
+        }
     }
 }

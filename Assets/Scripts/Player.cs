@@ -17,8 +17,6 @@ public class Player : MonoBehaviour
     [SerializeField]
     LayerMask isLayer;
 
-    public Data data;
-
     bool isGround;
 
     private void Start()
@@ -40,7 +38,7 @@ public class Player : MonoBehaviour
     {
         float move = 0f;
 
-        if (weapon.data.isReloading)
+        if (weapon != null && weapon.data.isReloading)
         {
             speed = 3f;
         }
@@ -61,5 +59,10 @@ public class Player : MonoBehaviour
         }
 
         rb.velocity = new Vector2(speed * move, rb.velocity.y);
+    }
+
+    public void SetWeapon(Weapon newWeapon)
+    {
+        weapon = newWeapon;
     }
 }

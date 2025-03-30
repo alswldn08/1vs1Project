@@ -30,7 +30,7 @@ public abstract class Weapon : MonoBehaviour
 
                 if (uiManager != null)
                 {
-                    uiManager.CountBullet(this); // 현재 무기를 매개변수로 전달
+                    uiManager.CountBullet(this);
                 }
                 else
                 {
@@ -49,18 +49,18 @@ public abstract class Weapon : MonoBehaviour
         if (data.currentBullet == data.maxBullet || data.isReloading) yield break;
 
         data.isReloading = true;
-        Debug.Log("재장전 중...");
+        Debug.Log($"{gameObject.name}: 재장전 중...");
 
         yield return new WaitForSeconds(data.reloadTime);
 
         data.currentBullet = data.maxBullet;
-        Debug.Log("재장전 완료!");
+        Debug.Log($"{gameObject.name}: 재장전 완료!");
 
         data.isReloading = false;
 
         if (uiManager != null)
         {
-            uiManager.CountBullet(this); // 현재 무기를 매개변수로 전달
+            uiManager.CountBullet(this);
         }
         else
         {
@@ -76,14 +76,6 @@ public abstract class Weapon : MonoBehaviour
         if (uiManager == null)
         {
             Debug.LogError("UIManager를 찾을 수 없습니다.");
-        }
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.R) && data.currentBullet < data.maxBullet && !data.isReloading)
-        {
-            StartCoroutine(Reload());
         }
     }
 }
