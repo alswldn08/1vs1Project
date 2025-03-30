@@ -5,28 +5,44 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    private Weapon weapon;
     public Text countRifle;
     public Text countGlock;
-    public Data data;
-
-    //public Text countBullet1;
+    private Rifle rifle;
+    private Glock glock;
 
     void Start()
     {
-        weapon = FindObjectOfType<Weapon>();
-        CountBullet();
-    }
-    
-    public void CountBullet()
-    {
-        if(weapon != null && countRifle != null)
-        {
+        // 라이플과 글록을 찾아서 UI 초기화
+        rifle = FindObjectOfType<Rifle>();
+        glock = FindObjectOfType<Glock>();
 
+        InitializeUI();
+    }
+
+    public void InitializeUI()
+    {
+        if (rifle != null && countRifle != null)
+        {
+            countRifle.text = rifle.data.currentBullet + "/" + rifle.data.maxBullet;
+        }
+        if (glock != null && countGlock != null)
+        {
+            countGlock.text = glock.data.currentBullet + "/" + glock.data.maxBullet;
+        }
+    }
+
+    public void UpdateWeapon(Weapon newWeapon)
+    {
+        CountBullet(newWeapon);
+    }
+
+    public void CountBullet(Weapon weapon)
+    {
+        if (weapon is Rifle && countRifle != null)
+        {
             countRifle.text = weapon.data.currentBullet + "/" + weapon.data.maxBullet;
         }
-
-        if(weapon != null && countGlock != null)
+        else if (weapon is Glock && countGlock != null)
         {
             countGlock.text = weapon.data.currentBullet + "/" + weapon.data.maxBullet;
         }

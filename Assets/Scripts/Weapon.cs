@@ -13,9 +13,6 @@ public struct Data
 public abstract class Weapon : MonoBehaviour
 {
     public Data data;
-
-    //public GameObject bulletPrefab;
-    //public Transform firePoint;
     private UIManager uiManager;
 
     public abstract void InitSetting();
@@ -27,11 +24,18 @@ public abstract class Weapon : MonoBehaviour
             if (data.currentBullet > 0)
             {
                 GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
-
                 float direction = transform.eulerAngles.y == 180 ? -1f : 1f;
                 bullet.GetComponent<Bullet>().SetDirection(direction);
                 data.currentBullet--;
-                uiManager.CountBullet();
+
+                if (uiManager != null)
+                {
+                    uiManager.CountBullet(this); // 현재 무기를 매개변수로 전달
+                }
+                else
+                {
+                    Debug.LogError("UIManager가 할당되지 않음");
+                }
             }
             else
             {
@@ -53,13 +57,26 @@ public abstract class Weapon : MonoBehaviour
         Debug.Log("재장전 완료!");
 
         data.isReloading = false;
-        uiManager.CountBullet();
+
+        if (uiManager != null)
+        {
+            uiManager.CountBullet(this); // 현재 무기를 매개변수로 전달
+        }
+        else
+        {
+            Debug.LogError("UIManager가 할당되지 않음");
+        }
     }
 
     protected virtual void Start()
     {
         data.currentBullet = data.maxBullet;
         uiManager = FindObjectOfType<UIManager>();
+
+        if (uiManager == null)
+        {
+            Debug.LogError("UIManager를 찾을 수 없습니다.");
+        }
     }
 
     private void Update()
@@ -69,55 +86,4 @@ public abstract class Weapon : MonoBehaviour
             StartCoroutine(Reload());
         }
     }
-
 }
-    //void Update()
-    //{
-    //    if (Input.GetMouseButtonDown(1))
-    //    {
-    //        Shoot();
-    //    }
-
-    //    if (Input.GetKeyDown(KeyCode.R) && data.currentBullet < data.maxBullet && !data.isReloading)
-    //    {
-    //        StartCoroutine(Reload());
-    //    }
-    //}
-
-    //void Shoot()
-    //{
-
-    //    if (isReloading)
-    //        return;
-
-    //    if (currentBullet > 0)
-    //    {
-    //        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
-
-    //        float direction = transform.eulerAngles.y == 180 ? -1f : 1f;
-    //        bullet.GetComponent<Bullet>().SetDirection(direction);
-    //        currentBullet--;
-    //        uiManager.CountBullet();
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("재장전 하세요");
-    //    }
-
-    //}
-
-    //private IEnumerator Reload()
-    //{
-    //    if (currentBullet == maxBullet || isReloading) yield break;
-
-    //    isReloading = true;
-    //    Debug.Log("재장전 중...");
-
-    //    yield return new WaitForSeconds(reloadTime);
-
-    //    currentBullet = maxBullet;
-    //    Debug.Log("재장전 완료!");
-
-    //    isReloading = false;
-    //    uiManager.CountBullet();
-    //}
