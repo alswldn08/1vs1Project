@@ -21,7 +21,7 @@ public class WeaponController : MonoBehaviour
         uiManager = FindObjectOfType<UIManager>();
         player = FindObjectOfType<Player>();
 
-        // UI ÃÊ±âÈ­
+        // UI ï¿½Ê±ï¿½È­
         uiManager.UpdateWeapon(weapon);
     }
 
@@ -47,7 +47,7 @@ public class WeaponController : MonoBehaviour
     private void ChangeWeapon(Weapon newWeapon)
     {
         weapon = newWeapon;
-        Debug.Log($"{weapon.GetType().Name} ÀåÂø");
+        Debug.Log($"{weapon.GetType().Name}");
 
         uiManager.UpdateWeapon(weapon);
 

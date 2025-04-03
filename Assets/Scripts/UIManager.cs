@@ -12,7 +12,6 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
-        // 라이플과 글록을 찾아서 UI 초기화
         rifle = FindObjectOfType<Rifle>();
         glock = FindObjectOfType<Glock>();
 

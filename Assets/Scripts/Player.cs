@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float speed = 6f;
+    public float speed = 5f;
     private Rigidbody2D rb;
     private Weapon weapon;
 
@@ -40,11 +40,11 @@ public class Player : MonoBehaviour
 
         if (weapon != null && weapon.data.isReloading)
         {
-            speed = 3f;
+            speed = 2f;
         }
         else
         {
-            speed = 6f;
+            speed = 5f;
         }
 
         if (Input.GetKey(KeyCode.A))
