@@ -14,6 +14,7 @@ public class Rifle : Weapon
     {
         data.maxBullet = 50;
         data.reloadTime = 2;
+        data.coolTime = 0.2f;
         data.isReloading = false;
 
     }

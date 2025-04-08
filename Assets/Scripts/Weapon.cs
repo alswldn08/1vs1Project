@@ -7,6 +7,7 @@ public struct Data
     public int maxBullet;
     public int currentBullet; //현재 남은 총알 개수
     public float reloadTime;
+    public float coolTime;
     public bool isReloading;
 }
 
@@ -14,32 +15,65 @@ public abstract class Weapon : MonoBehaviour
 {
     public Data data;
     private UIManager uiManager;
+    private WeaponController WController;
+    private Glock glock;
+    private Rifle rifle;
 
     public abstract void InitSetting();
 
     public virtual void Shoot(GameObject bulletPrefab, Transform firePoint)
     {
-        if (Input.GetMouseButtonDown(1))
+        if(WController.weapon == glock)
         {
-            if (data.currentBullet > 0)
+            if (Input.GetMouseButtonDown(1))
             {
-                GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
-                float direction = transform.eulerAngles.y == 180 ? -1f : 1f;
-                bullet.GetComponent<Bullet>().SetDirection(direction);
-                data.currentBullet--;
-
-                if (uiManager != null)
+                if (data.currentBullet > 0)
                 {
-                    uiManager.CountBullet(this);
+                    GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
+                    float direction = transform.eulerAngles.y == 180 ? -1f : 1f;
+                    bullet.GetComponent<Bullet>().SetDirection(direction);
+                    data.currentBullet--;
+
+                    if (uiManager != null)
+                    {
+                        uiManager.CountBullet(this);
+                    }
+                    else
+                    {
+                        Debug.LogError("UIManager가 할당되지 않음");
+                    }
                 }
                 else
                 {
-                    Debug.LogError("UIManager가 할당되지 않음");
+                    Debug.Log("재장전 하세요");
                 }
             }
-            else
+        }
+
+        if(WController.weapon == rifle)
+        {
+            if (Input.GetMouseButton(1))
             {
-                Debug.Log("재장전 하세요");
+                if (data.currentBullet > 0)
+                {
+                    GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
+                    float direction = transform.eulerAngles.y == 180 ? -1f : 1f;
+                    bullet.GetComponent<Bullet>().SetDirection(direction);
+                    data.currentBullet--;
+
+                    if (uiManager != null)
+                    {
+                        uiManager.CountBullet(this);
+                    }
+                    else
+                    {
+                        Debug.LogError("UIManager가 할당되지 않음");
+                    }
+                }
+                else
+                {
+                    Debug.Log("재장전 하세요");
+                }
             }
         }
     }
@@ -72,6 +106,9 @@ public abstract class Weapon : MonoBehaviour
     {
         data.currentBullet = data.maxBullet;
         uiManager = FindObjectOfType<UIManager>();
+        WController = FindObjectOfType<WeaponController>();
+        glock = FindObjectOfType<Glock>();
+        rifle = FindObjectOfType<Rifle>();
 
         if (uiManager == null)
         {
