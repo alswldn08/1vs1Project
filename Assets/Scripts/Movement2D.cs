@@ -5,42 +5,47 @@ using UnityEngine;
 public class Movement2D : MonoBehaviour
 {
     [SerializeField]
-    private LayerMask collisionLayer;               //         浹 ϴ     ̾ 
+    private LayerMask collisionLayer;
+    [SerializeField]
+    [Range(2, 100)]
+    private int horizontalRayCount = 2;         
+    private float horizontalRaySpacing;             
 
     [SerializeField]
     [Range(2, 100)]
-    private int horizontalRayCount = 2;     // x             ߻  ϴ             
-    private float horizontalRaySpacing;     // x             ߻  ϴ                  
+    private int verticalRayCount = 2;       
+    private float verticalRaySpacing;        
 
     [SerializeField]
-    [Range(2, 100)]
-    private int verticalRayCount = 2;       // y             ߻  ϴ             
-    private float verticalRaySpacing;           // y             ߻  ϴ                  
+    private float moveSpeed = 5;
+    [SerializeField]
+    private float jumpForce = 10;      
+    [SerializeField]
+    private float lowGravity = -20;
+    [SerializeField]
+    private float highGravity = -30;
+    private float gravity = -30;
+    [SerializeField]
+    private int maxJumpCount = 2;
+    private int currentJumpCount = 0;
+    private Vector3 velocity;
+    private float skinWidth = 0.015f;
+    private Weapon weapon;
 
-    [SerializeField]
-    private float moveSpeed = 5;                //  ̵   ӵ 
-    [SerializeField]
-    private float jumpForce = 10;               //        
-    [SerializeField]
-    private float lowGravity = -20;         //     Ű                           Ǵ   ߷ 
-    [SerializeField]
-    private float highGravity = -30;            //  Ϲ            Ǵ   ߷ 
-    private float gravity = -30;                //  ߷ 
-    [SerializeField]
-    private int maxJumpCount = 2;           //  ִ       Ƚ  
-    private int currentJumpCount = 0;       //           ִ       Ƚ  
-    private Vector3 velocity;                   //  ӷ  (     *  ӵ )
-    private float skinWidth = 0.015f;           //       Ʈ           İ     ҷ      
-
-    private CapsuleCollider2D capsuleCollider2D;  //       Ʈ    ܰ    ġ  ľ     Ȱ  
-    private ColliderCorner2D colliderCorner2D;  //       Ʈ    𼭸    ġ
-    private CollisionChecker2D collisionChecker2D;  // 4         浹     
+    private CapsuleCollider2D capsuleCollider2D;
+    private ColliderCorner2D colliderCorner2D;
+    private CollisionChecker2D collisionChecker2D;
 
     public bool IsLongJump { set; get; } = false;
 
     private void Awake()
     {
         capsuleCollider2D = GetComponent<CapsuleCollider2D>();
+    }
+
+    private void Start()
+    {
+        weapon = FindObjectOfType<Weapon>();
     }
 
     private void Update()
@@ -92,13 +97,10 @@ public class Movement2D : MonoBehaviour
 
     //private void UpdateMovement()
     //{
-    //    //  ߷ 
     //    velocity.y += gravity * Time.deltaTime;
 
-    //    //           ӿ      Ǵ        ӷ 
     //    Vector3 currentVelocity = velocity * Time.deltaTime;
 
-    //    // x  ӷ    0    ƴ             ߻     浹       ˻ 
     //    if (currentVelocity.x != 0)
     //    {
     //        RaycastsHorizontal(ref currentVelocity);
@@ -107,43 +109,31 @@ public class Movement2D : MonoBehaviour
     //    {
     //        RaycastsVertical(ref currentVelocity);
     //    }
-
-    //    //       Ʈ  ̵ 
     //    transform.position += currentVelocity;
     //}
 
     private void OnDrawGizmos()
-    {
-        //  ׷                 
+    {         
         Gizmos.color = Color.blue;
 
         for (int i = 0; i < horizontalRayCount; ++i)
         {
             Vector2 position = Vector2.up * horizontalRaySpacing * i;
-            //   /         ߻    ġ          (  ġ,       )
             Gizmos.DrawSphere(colliderCorner2D.bottomLeft + position, 0.1f);
             Gizmos.DrawSphere(colliderCorner2D.bottomRight + position, 0.1f);
         }
         for (int i = 0; i < verticalRayCount; ++i)
         {
             Vector2 position = Vector2.right * verticalRaySpacing * i;
-            //   / Ʒ        ߻    ġ          (  ġ,       )
             Gizmos.DrawSphere(colliderCorner2D.bottomLeft + position, 0.1f);
             Gizmos.DrawSphere(colliderCorner2D.topLeft + position, 0.1f);
         }
     }
-
-    /// <summary>
-    /// x  ̵           .  ܺο    ȣ  
-    /// </summary>
     public void MoveTo(float x)
     {
         velocity.x = x * moveSpeed;
     }
 
-    /// <summary>
-    ///          .  ܺο    ȣ  
-    /// </summary>
     public bool JumpTo()
     {
         if (currentJumpCount > 0)
@@ -155,15 +145,11 @@ public class Movement2D : MonoBehaviour
         return false;
     }
 
-
-    /// <summary>
-    /// x  ̵                 ߻  (   or   )
-    /// </summary>
     private void RaycastsHorizontal(ref Vector3 velocity)
     {
-        float direction = Mathf.Sign(velocity.x);               //  ̵       (  :1,   :-1)
-        float distance = Mathf.Abs(velocity.x) + skinWidth; //          
-        Vector2 rayPosition = Vector2.zero;                     //         ߻ Ǵ    ġ
+        float direction = Mathf.Sign(velocity.x);
+        float distance = Mathf.Abs(velocity.x) + skinWidth;       
+        Vector2 rayPosition = Vector2.zero;
         RaycastHit2D hit;
 
         for (int i = 0; i < horizontalRayCount; ++i)
@@ -171,18 +157,13 @@ public class Movement2D : MonoBehaviour
             rayPosition = direction == 1 ? colliderCorner2D.bottomRight : colliderCorner2D.bottomLeft;
             rayPosition += Vector2.up * horizontalRaySpacing * i;
 
-            //       ߻ 
             hit = Physics2D.Raycast(rayPosition, Vector2.right * direction, distance, collisionLayer);
-
-            //         ε            Ʈ          
+  
             if (hit)
             {
-                // x    ӷ                 Ʈ         Ÿ         ( Ÿ    0 ̸   ӷ  0)
-                velocity.x = (hit.distance - skinWidth) * direction;
-                //  ݺ          Ǳ                 ߻ Ǵ          Ÿ      
+                velocity.x = (hit.distance - skinWidth) * direction; 
                 distance = hit.distance;
 
-                //       ̵     ⿡      left  Ǵ  right   true        ȴ 
                 collisionChecker2D.left = direction == -1;
                 collisionChecker2D.right = direction == 1;
             }
@@ -191,14 +172,11 @@ public class Movement2D : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// y  ̵                 ߻  (   or  Ʒ )
-    /// </summary>
     private void RaycastsVertical(ref Vector3 velocity)
     {
-        float direction = Mathf.Sign(velocity.y);               //  ̵       (  :1,  Ʒ :-1)
-        float distance = Mathf.Abs(velocity.y) + skinWidth; //          
-        Vector2 rayPosition = Vector2.zero;                     //         ߻ Ǵ    ġ
+        float direction = Mathf.Sign(velocity.y);
+        float distance = Mathf.Abs(velocity.y) + skinWidth;
+        Vector2 rayPosition = Vector2.zero;
         RaycastHit2D hit;
 
         for (int i = 0; i < verticalRayCount; ++i)
@@ -206,18 +184,13 @@ public class Movement2D : MonoBehaviour
             rayPosition = direction == 1 ? colliderCorner2D.topLeft : colliderCorner2D.bottomLeft;
             rayPosition += Vector2.right * (verticalRaySpacing * i + velocity.x);
 
-            //       ߻ 
             hit = Physics2D.Raycast(rayPosition, Vector2.up * direction, distance, collisionLayer);
 
-            //         ε            Ʈ          
             if (hit)
             {
-                // y    ӷ                 Ʈ         Ÿ         ( Ÿ    0 ̸   ӷ  0)
-                velocity.y = (hit.distance - skinWidth) * direction;
-                //  ݺ          Ǳ                 ߻ Ǵ          Ÿ      
+                velocity.y = (hit.distance - skinWidth) * direction;  
                 distance = hit.distance;
 
-                //       ̵     ⿡      down  Ǵ  up   true        ȴ 
                 collisionChecker2D.down = direction == -1;
                 collisionChecker2D.up = direction == 1;
             }
@@ -226,29 +199,19 @@ public class Movement2D : MonoBehaviour
         }
     }
 
-    /// <summary>
-    ///            ߻ Ǵ                  
-    /// </summary>
     private void CalculateRaySpacing()
     {
-        //      Collider2D    ܰ    ġ         ޾ƿ   ,
-        // skinWidth  ŭ              
         Bounds bounds = capsuleCollider2D.bounds;
         bounds.Expand(skinWidth * -2);
-
-        // x             ߻  ϴ             
+       
         horizontalRaySpacing = bounds.size.y / (horizontalRayCount - 1);
-        // y             ߻  ϴ             
+        
         verticalRaySpacing = bounds.size.x / (verticalRayCount - 1);
     }
 
-    /// <summary>
-    ///  浹     (Collider)    ܰ       ġ
-    /// </summary>
     private void UpdateColliderCorner2D()
     {
-        //      Collider2D    ܰ    ġ         ޾ƿ   ,
-        // skinWidth  ŭ              
+
         Bounds bounds = capsuleCollider2D.bounds;
         bounds.Expand(skinWidth * -2);
 
@@ -259,9 +222,9 @@ public class Movement2D : MonoBehaviour
 
     private struct ColliderCorner2D
     {
-        public Vector2 topLeft;     //         
-        public Vector2 bottomLeft;      //       ϴ 
-        public Vector2 bottomRight; //         ϴ 
+        public Vector2 topLeft;      
+        public Vector2 bottomLeft;
+        public Vector2 bottomRight;
     }
 
     public struct CollisionChecker2D
@@ -278,6 +241,11 @@ public class Movement2D : MonoBehaviour
             left = false;
             right = false;
         }
+    }
+
+    public void SetWeapon(Weapon newWeapon)
+    {
+        weapon = newWeapon;
     }
 }
 

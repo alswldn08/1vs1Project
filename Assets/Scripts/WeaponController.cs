@@ -11,7 +11,7 @@ public class WeaponController : MonoBehaviour
     private Rifle rifle;
     private Glock glock;
     private UIManager uiManager;
-    private Player player;
+    private Movement2D moveMent2d;
 
     void Start()
     {
@@ -19,7 +19,7 @@ public class WeaponController : MonoBehaviour
         rifle = GetComponent<Rifle>();
         glock = GetComponent<Glock>();
         uiManager = FindObjectOfType<UIManager>();
-        player = FindObjectOfType<Player>();
+        moveMent2d = FindObjectOfType<Movement2D>();
 
         // UI �ʱ�ȭ
         uiManager.UpdateWeapon(weapon);
@@ -51,9 +51,9 @@ public class WeaponController : MonoBehaviour
 
         uiManager.UpdateWeapon(weapon);
 
-        if (player != null)
+        if (moveMent2d != null)
         {
-            player.SetWeapon(weapon);
+            moveMent2d.SetWeapon(weapon);
         }
     }
 }
