@@ -1,18 +1,29 @@
 using UnityEngine;
 
-public class FollowPlayer : MonoBehaviour
+public class CameraFollowXOnly : MonoBehaviour
 {
-    [SerializeField]
-    private Transform player;  // 따라갈 대상 (플레이어)
+    public Transform player;        // 따라갈 플레이어
+    private Vector3 offset;         // 시작 시 계산되는 오프셋
 
-    [SerializeField]
-    private Vector3 offset = new Vector3(0, 0, 0);  // 따라갈 때의 위치 오프셋
-
-    private void LateUpdate()
+    void Start()
     {
-        if (player != null)
+        if (player == null)
         {
-            transform.position = player.position + offset;
+            Debug.LogError("Player 트랜스폼이 설정되지 않았습니다.");
+            return;
         }
+
+        // 처음 시작할 때 오프셋 계산
+        offset = transform.position - player.position;
+    }
+
+    void LateUpdate()
+    {
+        if (player == null) return;
+
+        // x 좌표만 따라가고 나머지는 현재 카메라 값 유지
+        Vector3 newPos = transform.position;
+        newPos.x = player.position.x + offset.x;
+        transform.position = newPos;
     }
 }
