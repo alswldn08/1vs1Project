@@ -112,23 +112,23 @@ public class Movement2D : MonoBehaviour
     //    transform.position += currentVelocity;
     //}
 
-    private void OnDrawGizmos()
-    {         
-        Gizmos.color = Color.blue;
+    //private void OnDrawGizmos()
+    //{         
+    //    Gizmos.color = Color.blue;
 
-        for (int i = 0; i < horizontalRayCount; ++i)
-        {
-            Vector2 position = Vector2.up * horizontalRaySpacing * i;
-            Gizmos.DrawSphere(colliderCorner2D.bottomLeft + position, 0.1f);
-            Gizmos.DrawSphere(colliderCorner2D.bottomRight + position, 0.1f);
-        }
-        for (int i = 0; i < verticalRayCount; ++i)
-        {
-            Vector2 position = Vector2.right * verticalRaySpacing * i;
-            Gizmos.DrawSphere(colliderCorner2D.bottomLeft + position, 0.1f);
-            Gizmos.DrawSphere(colliderCorner2D.topLeft + position, 0.1f);
-        }
-    }
+    //    for (int i = 0; i < horizontalRayCount; ++i)
+    //    {
+    //        Vector2 position = Vector2.up * horizontalRaySpacing * i;
+    //        Gizmos.DrawSphere(colliderCorner2D.bottomLeft + position, 0.1f);
+    //        Gizmos.DrawSphere(colliderCorner2D.bottomRight + position, 0.1f);
+    //    }
+    //    for (int i = 0; i < verticalRayCount; ++i)
+    //    {
+    //        Vector2 position = Vector2.right * verticalRaySpacing * i;
+    //        Gizmos.DrawSphere(colliderCorner2D.bottomLeft + position, 0.1f);
+    //        Gizmos.DrawSphere(colliderCorner2D.topLeft + position, 0.1f);
+    //    }
+    //}
     public void MoveTo(float x)
     {
         velocity.x = x * moveSpeed;
