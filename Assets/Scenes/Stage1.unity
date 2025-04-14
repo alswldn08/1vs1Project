@@ -561,6 +561,7 @@ GameObject:
   m_Component:
   - component: {fileID: 38348219}
   - component: {fileID: 38348220}
+  - component: {fileID: 38348221}
   m_Layer: 0
   m_Name: FireType1_4
   m_TagString: Untagged
@@ -636,6 +637,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &38348221
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 38348218}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9cf8ed221e15bbd4189cccce7f636fe1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &42115669
 GameObject:
   m_ObjectHideFlags: 0
@@ -6368,6 +6390,7 @@ GameObject:
   - component: {fileID: 988459822}
   - component: {fileID: 988459821}
   - component: {fileID: 988459824}
+  - component: {fileID: 988459825}
   m_Layer: 0
   m_Name: BackGround
   m_TagString: Untagged
@@ -6475,6 +6498,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1933658011}
+--- !u!95 &988459825
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 988459819}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b607aa2c17eaff844a9249594ab105fa, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &991107992
 GameObject:
   m_ObjectHideFlags: 0
@@ -8671,7 +8715,6 @@ GameObject:
   - component: {fileID: 1435290453}
   - component: {fileID: 1435290452}
   - component: {fileID: 1435290454}
-  - component: {fileID: 1435290456}
   m_Layer: 7
   m_Name: Tilemap
   m_TagString: Untagged
@@ -15547,33 +15590,6 @@ TilemapCollider2D:
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
   m_UseDelaunayMesh: 0
---- !u!50 &1435290456
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1435290450}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1 &1435633182
 GameObject:
   m_ObjectHideFlags: 0
@@ -16481,6 +16497,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1562962248}
   - component: {fileID: 1562962249}
+  - component: {fileID: 1562962250}
   m_Layer: 0
   m_Name: FireType2_1
   m_TagString: Untagged
@@ -16497,7 +16514,7 @@ Transform:
   m_GameObject: {fileID: 1562962247}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.77, y: 2.59, z: 10}
+  m_LocalPosition: {x: 1.77, y: 2, z: 10}
   m_LocalScale: {x: 0.7, y: 0.69, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -16556,6 +16573,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &1562962250
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1562962247}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9cf8ed221e15bbd4189cccce7f636fe1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1573999722
 GameObject:
   m_ObjectHideFlags: 0
@@ -17781,6 +17819,7 @@ Transform:
   - {fileID: 991107993}
   - {fileID: 1115431126}
   - {fileID: 1562962248}
+  - {fileID: 38348219}
   - {fileID: 1516964717}
   - {fileID: 1688038857}
   - {fileID: 1338042724}
@@ -17797,7 +17836,6 @@ Transform:
   - {fileID: 1444662001}
   - {fileID: 1551611910}
   - {fileID: 399666790}
-  - {fileID: 38348219}
   m_Father: {fileID: 481270025}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1798491696
