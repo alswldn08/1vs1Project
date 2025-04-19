@@ -29,11 +29,6 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(jumpKey))
         {
             bool isJump = movement2D.JumpTo();
-
-            if (isJump)
-            {
-                //                   . Todo..
-            }
         }
         else if (Input.GetKey(jumpKey))
         {
