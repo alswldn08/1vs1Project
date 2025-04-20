@@ -53,7 +53,7 @@ public class WeaponController : MonoBehaviour
 
         if (moveMent2d != null)
         {
-            moveMent2d.SetWeapon(weapon);
+            //moveMent2d.SetWeapon(weapon);
         }
     }
 }
