@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CameraFollowXOnly : MonoBehaviour
+public class FollowPlayer : MonoBehaviour
 {
     public Transform player;        // 따라갈 플레이어
     private Vector3 offset;         // 시작 시 계산되는 오프셋
