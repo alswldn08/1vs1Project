@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+
     public Text countRifle;
     public Text countGlock;
     private Rifle rifle;
