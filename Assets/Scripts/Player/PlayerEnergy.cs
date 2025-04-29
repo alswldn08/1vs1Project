@@ -12,7 +12,8 @@ public class PlayerEnergy : MonoBehaviour
 
     void Start()
     {
-        
+        energy.maxValue = 100f;
+        energy.value = 100f;
     }
 
 
