@@ -1,11 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    [Header("Button")]
+    public Button startBtn;
+    public Button settingBtn;
+    public Button exitBtn;
+    public Button helpBtn;
 
+
+    [Header("WeaponUI")]
     public Text countRifle;
     public Text countGlock;
     private Rifle rifle;
@@ -16,7 +24,29 @@ public class UIManager : MonoBehaviour
         rifle = FindObjectOfType<Rifle>();
         glock = FindObjectOfType<Glock>();
 
+        startBtn.onClick.AddListener(StartBtn);
+        settingBtn.onClick.AddListener(SettingBtn);
+        exitBtn.onClick.AddListener(ExitBtn);
+        helpBtn.onClick.AddListener(HelpBtn);
+
         InitializeUI();
+    }
+
+    public void StartBtn()
+    {
+
+    }
+    public void SettingBtn()
+    {
+
+    }
+    public void ExitBtn()
+    {
+
+    }
+    public void HelpBtn()
+    {
+
     }
 
     public void InitializeUI()
