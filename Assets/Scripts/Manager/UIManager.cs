@@ -3,16 +3,24 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
-    [Header("Button")]
+    [Header("ButtonOn")]
     public Button startBtn;
     public Button settingBtn;
     public Button exitBtn;
     public Button helpBtn;
-
-
+    [Header("ButtonOff")]
+    public Button settingOffBtn;
+    public Button exitYesBtn;
+    public Button exitNoBtn;
+    public Button helpOffBtn;
+    [Header("Page")]
+    public Image settingPG;
+    public Image exitPG;
+    public Image helpPG;
     [Header("WeaponUI")]
     public Text countRifle;
     public Text countGlock;
@@ -29,26 +37,57 @@ public class UIManager : MonoBehaviour
         exitBtn.onClick.AddListener(ExitBtn);
         helpBtn.onClick.AddListener(HelpBtn);
 
+        settingOffBtn.onClick.AddListener(SettingOffBtn);
+        exitYesBtn.onClick.AddListener(ExitYesBtn);
+        exitNoBtn.onClick.AddListener(ExitNoBtn);
+        helpOffBtn.onClick.AddListener(HelpOffBtn);
+
+        settingPG.gameObject.SetActive(false);
+        exitPG.gameObject.SetActive(false);
+        helpPG.gameObject.SetActive(false);
+
         InitializeUI();
     }
 
+    #region 실행 버튼
     public void StartBtn()
     {
-
+        SceneManager.LoadScene("Stage1");
     }
     public void SettingBtn()
     {
-
+        settingPG.gameObject.SetActive(true);
     }
     public void ExitBtn()
     {
-
+        exitPG.gameObject.SetActive(true);
     }
     public void HelpBtn()
     {
-
+        helpPG.gameObject.SetActive(true);
     }
+    #endregion
 
+    #region 취소 버튼
+    public void SettingOffBtn()
+    {
+        settingPG.gameObject.SetActive(false);
+    }
+    public void ExitYesBtn()
+    {
+        Application.Quit();
+    }
+    public void ExitNoBtn()
+    {
+        exitPG.gameObject.SetActive(false);
+    }
+    public void HelpOffBtn()
+    {
+        helpPG.gameObject.SetActive(false);
+    }
+    #endregion
+
+    #region 무기UI
     public void InitializeUI()
     {
         if (rifle != null && countRifle != null)
@@ -77,4 +116,5 @@ public class UIManager : MonoBehaviour
             countGlock.text = weapon.data.currentBullet + "/" + weapon.data.maxBullet;
         }
     }
+    #endregion
 }
