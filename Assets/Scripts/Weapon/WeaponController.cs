@@ -10,7 +10,7 @@ public class WeaponController : MonoBehaviour
 
     private Rifle rifle;
     private Glock glock;
-    private UIManager uiManager;
+    private TitleUI titleUI;
     private Player player;
 
     void Start()
@@ -18,11 +18,11 @@ public class WeaponController : MonoBehaviour
         weapon.InitSetting();
         rifle = GetComponent<Rifle>();
         glock = GetComponent<Glock>();
-        uiManager = FindObjectOfType<UIManager>();
+        titleUI = FindObjectOfType<TitleUI>();
         player = FindObjectOfType<Player>();
 
         // UI �ʱ�ȭ
-        uiManager.UpdateWeapon(weapon);
+        titleUI.UpdateWeapon(weapon);
     }
 
     void Update()
@@ -49,7 +49,7 @@ public class WeaponController : MonoBehaviour
         weapon = newWeapon;
         Debug.Log($"{weapon.GetType().Name}");
 
-        uiManager.UpdateWeapon(weapon);
+        titleUI.UpdateWeapon(weapon);
 
         if (player != null)
         {

@@ -14,7 +14,7 @@ public struct Data
 public abstract class Weapon : MonoBehaviour
 {
     public Data data;
-    private UIManager uiManager;
+    private TitleUI titleUI;
     private WeaponController WController;
     private Glock glock;
     private Rifle rifle;
@@ -34,9 +34,9 @@ public abstract class Weapon : MonoBehaviour
                     bullet.GetComponent<Bullet>().SetDirection(direction);
                     data.currentBullet--;
 
-                    if (uiManager != null)
+                    if (titleUI != null)
                     {
-                        uiManager.CountBullet(this);
+                        titleUI.CountBullet(this);
                     }
                     else
                     {
@@ -61,9 +61,9 @@ public abstract class Weapon : MonoBehaviour
                     bullet.GetComponent<Bullet>().SetDirection(direction);
                     data.currentBullet--;
 
-                    if (uiManager != null)
+                    if (titleUI != null)
                     {
-                        uiManager.CountBullet(this);
+                        titleUI.CountBullet(this);
                     }
                     else
                     {
@@ -92,9 +92,9 @@ public abstract class Weapon : MonoBehaviour
 
         data.isReloading = false;
 
-        if (uiManager != null)
+        if (titleUI != null)
         {
-            uiManager.CountBullet(this);
+            titleUI.CountBullet(this);
         }
         else
         {
@@ -105,12 +105,12 @@ public abstract class Weapon : MonoBehaviour
     protected virtual void Start()
     {
         data.currentBullet = data.maxBullet;
-        uiManager = FindObjectOfType<UIManager>();
+        titleUI = FindObjectOfType<TitleUI>();
         WController = FindObjectOfType<WeaponController>();
         glock = FindObjectOfType<Glock>();
         rifle = FindObjectOfType<Rifle>();
 
-        if (uiManager == null)
+        if (titleUI == null)
         {
             Debug.LogError("UIManager를 찾을 수 없습니다.");
         }
