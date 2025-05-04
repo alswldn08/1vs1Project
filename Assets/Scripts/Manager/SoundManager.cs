@@ -27,6 +27,7 @@ public class SoundManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        PlayeBBM(0);
     }
 
     void Start()
@@ -47,10 +48,21 @@ public class SoundManager : MonoBehaviour
     public void PlayeBBM(int Index)
     {
         bgmSound.clip = bgmList[Index];
+        bgmSound.Play();
     }
     public void PlayeEffect(int Index)
     {
         effectSound.clip = effectList[Index];
+        effectSound.Play();
+    }
+
+    public void PlayBGMStop()
+    {
+        bgmSound.Stop();
+    }
+    public void PlayeEffectStop()
+    {
+        effectSound.Stop();
     }
 
     public void SetBGMVolum(float value)
