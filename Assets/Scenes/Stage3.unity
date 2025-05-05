@@ -15792,7 +15792,7 @@ MonoBehaviour:
   isLayer:
     serializedVersion: 2
     m_Bits: 128
-  dashForce: 10
+  dashForce: 15
 --- !u!61 &1332896507
 BoxCollider2D:
   m_ObjectHideFlags: 0
