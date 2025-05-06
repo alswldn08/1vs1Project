@@ -32,6 +32,9 @@ public class Player : MonoBehaviour
     float dashTime = 0.1f; // 대쉬 지속 시간
     float dashTimer = 0f;
 
+    float dashCooldown = 0.5f;  // 추가된 쿨타임 변수
+    float dashCooldownTimer = 0f;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -52,8 +55,10 @@ public class Player : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, 0, 0);
         }
 
+        dashCooldownTimer -= Time.deltaTime;
+
         // 대쉬 입력 처리
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !isDashing)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !isDashing && dashCooldownTimer <= 0f)
         {
             StartDash();
         }
@@ -118,6 +123,7 @@ public class Player : MonoBehaviour
     {
         isDashing = true;
         dashTimer = dashTime;
+        dashCooldownTimer = dashCooldown; // 쿨타임 초기화
     }
 
     public void SetWeapon(Weapon newWeapon)
