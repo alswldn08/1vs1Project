@@ -4,8 +4,22 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class MoveScene : MonoBehaviour
+public class MoveSceneManager : MonoBehaviour
 {
+    public static MoveSceneManager i { get; private set; }
+
+    private void Awake()
+    {
+        if(i == null)
+        {
+            i = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     public void MoveScene1()
     {
@@ -26,15 +40,15 @@ public class MoveScene : MonoBehaviour
         {
             if(SceneManager.GetActiveScene().name == "Stage1")
             {
-                MoveScene2();
+                InGameUIManager.i.StartLoading();
             }
             else if (SceneManager.GetActiveScene().name == "Stage2")
             {
-                MoveScene3();
+                InGameUIManager.i.StartLoading();
             }
             else
             {
-                SceneManager.LoadScene("Stage1");
+                InGameUIManager.i.StartLoading();
             }
         }
     }
