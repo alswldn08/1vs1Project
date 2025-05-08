@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float speed = 5f;
+    #region 레퍼런스
     private Rigidbody2D rb;
     private Weapon weapon;
+    private PlayerEnergy playerEnergy;
+    #endregion
 
     [SerializeField]
     private float power;
@@ -23,6 +25,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     LayerMask isLayer;
 
+    public float speed = 5f;
+
     bool isGround;
     bool isFacingRight = true;
 
@@ -35,10 +39,12 @@ public class Player : MonoBehaviour
     float dashCooldown = 0.5f;  // 추가된 쿨타임 변수
     float dashCooldownTimer = 0f;
 
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         weapon = GetComponent<Weapon>();
+        playerEnergy = GetComponent<PlayerEnergy>();
     }
 
     private void Update()
@@ -60,7 +66,14 @@ public class Player : MonoBehaviour
         // 대쉬 입력 처리
         if (Input.GetKeyDown(KeyCode.LeftShift) && !isDashing && dashCooldownTimer <= 0f)
         {
-            StartDash();
+            if(playerEnergy.energy.value != 0f)
+            {
+                StartDash();
+            }
+            else
+            {
+                Debug.Log("스테미너 부족!");
+            }
         }
 
         // 점프 처리
@@ -124,6 +137,7 @@ public class Player : MonoBehaviour
         isDashing = true;
         dashTimer = dashTime;
         dashCooldownTimer = dashCooldown; // 쿨타임 초기화
+        playerEnergy.energy.value -= 20f;
     }
 
     public void SetWeapon(Weapon newWeapon)

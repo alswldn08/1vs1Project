@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 
@@ -17,8 +18,11 @@ public class PlayerEnergy : MonoBehaviour
     }
 
 
-    void Update()
+    private void FixedUpdate()
     {
-        
+        if(energy.value < energy.maxValue)
+        {
+            energy.value += 1f * Time.deltaTime;
+        }
     }
 }
