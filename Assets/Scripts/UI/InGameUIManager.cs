@@ -47,6 +47,9 @@ public class InGameUIManager : MonoBehaviour
 
             switch (sceneName)
             {
+                case "Title":
+                    SceneManager.LoadScene("Stage1");
+                    break;
                 case "Stage1":
                     MoveSceneManager.i.MoveScene2();
                     break;

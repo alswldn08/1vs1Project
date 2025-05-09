@@ -15185,6 +15185,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: InGameUIManager
       objectReference: {fileID: 0}
+    - target: {fileID: 1430501081326293914, guid: 20890f9d615eda74ab9563831cda4e16, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5216753430120281039, guid: 20890f9d615eda74ab9563831cda4e16, type: 3}
       propertyPath: loadingPG
       value: 

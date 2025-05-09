@@ -52,10 +52,11 @@ public class TitleUI : MonoBehaviour
         InitializeUI();
     }
 
-    #region ½ÇÇà ¹öÆ°
+    #region ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°
     public void StartBtn()
     {
-        SceneManager.LoadScene("Stage1");
+        //SceneManager.LoadScene("Stage1");
+        InGameUIManager.i.StartLoading();
     }
     public void SettingBtn()
     {
@@ -77,7 +78,7 @@ public class TitleUI : MonoBehaviour
     }
     #endregion
 
-    #region Ãë¼Ò ¹öÆ°
+    #region ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°
     public void SettingOffBtn()
     {
         settingPG.gameObject.SetActive(false);
@@ -102,7 +103,7 @@ public class TitleUI : MonoBehaviour
     }
     #endregion
 
-    #region ¹«±âUI
+    #region ï¿½ï¿½ï¿½ï¿½UI
     public void InitializeUI()
     {
         if (rifle != null && countRifle != null)
