@@ -1,14 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class InGameUIManager : MonoBehaviour
+public class LoadingUI : MonoBehaviour
 {
-    public static InGameUIManager i { get; private set; }
-
+    public static LoadingUI i { get; private set; }
 
     [Header("Slider")]
     public Slider loadingSlider;
@@ -19,7 +17,7 @@ public class InGameUIManager : MonoBehaviour
 
     private void Awake()
     {
-        if(i == null)
+        if (i == null)
         {
             i = this;
         }

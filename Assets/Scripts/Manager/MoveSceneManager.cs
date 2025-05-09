@@ -13,12 +13,9 @@ public class MoveSceneManager : MonoBehaviour
         if(i == null)
         {
             i = this;
-            DontDestroyOnLoad(gameObject);
+
         }
-        else
-        {
-            Destroy(gameObject);
-        }
+
     }
 
     public void MoveScene1()
@@ -38,17 +35,17 @@ public class MoveSceneManager : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            if(SceneManager.GetActiveScene().name == "Stage1")
+            if (SceneManager.GetActiveScene().name == "Stage1")
             {
-                InGameUIManager.i.StartLoading();
+                LoadingUI.i.StartLoading();
             }
             else if (SceneManager.GetActiveScene().name == "Stage2")
             {
-                InGameUIManager.i.StartLoading();
+                LoadingUI.i.StartLoading();
             }
             else
             {
-                InGameUIManager.i.StartLoading();
+                LoadingUI.i.StartLoading();
             }
         }
     }

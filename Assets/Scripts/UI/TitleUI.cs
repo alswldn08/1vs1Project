@@ -29,6 +29,7 @@ public class TitleUI : MonoBehaviour
     private Rifle rifle;
     private Glock glock;
 
+
     void Start()
     {
         rifle = FindObjectOfType<Rifle>();
@@ -56,7 +57,7 @@ public class TitleUI : MonoBehaviour
     public void StartBtn()
     {
         //SceneManager.LoadScene("Stage1");
-        InGameUIManager.i.StartLoading();
+        LoadingUI.i.StartLoading();
     }
     public void SettingBtn()
     {
