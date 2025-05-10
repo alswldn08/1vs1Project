@@ -5,14 +5,14 @@ public class ParallaxMaterialScroller : MonoBehaviour
     [System.Serializable]
     public class ParallaxMaterialLayer
     {
-        public Material material;      // Àû¿ëÇÒ ¸ÓÆ¼¸®¾ó
-        public float parallaxFactor;   // ¿òÁ÷ÀÓ ºñÀ² (0~1)
-        public Vector2 direction = Vector2.right; // ±âº» x ¹æÇâ ½ºÅ©·Ñ
+        public Material material;      // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ¼ï¿½ï¿½ï¿½ï¿½
+        public float parallaxFactor;   // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (0~1)
+        public Vector2 direction = Vector2.right; // ï¿½âº» x ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å©ï¿½ï¿½
         [HideInInspector]
         public Vector2 currentOffset = Vector2.zero;
 
         [HideInInspector]
-        public string textureProperty = "_MainTex"; // ±âº»°ª
+        public string textureProperty = "_MainTex"; // ï¿½âº»ï¿½ï¿½
     }
 
     public ParallaxMaterialLayer[] layers;
@@ -24,12 +24,12 @@ public class ParallaxMaterialScroller : MonoBehaviour
         cam = Camera.main.transform;
         previousCamPos = cam.position;
 
-        // offset ÃÊ±âÈ­ ¹× ÅØ½ºÃ³ ¼Ó¼º ÀÌ¸§ °áÁ¤
+        // offset ï¿½Ê±ï¿½È­ ï¿½ï¿½ ï¿½Ø½ï¿½Ã³ ï¿½Ó¼ï¿½ ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½
         foreach (ParallaxMaterialLayer layer in layers)
         {
             if (layer.material == null) continue;
 
-            // URP È£È¯¿ë ¼Ó¼º È®ÀÎ
+            // URP È£È¯ï¿½ï¿½ ï¿½Ó¼ï¿½ È®ï¿½ï¿½
             if (layer.material.HasProperty("_BaseMap"))
                 layer.textureProperty = "_BaseMap";
             else
