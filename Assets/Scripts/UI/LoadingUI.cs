@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class LoadingUI : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class LoadingUI : MonoBehaviour
 
         loadingSlider.maxValue = 100f;
         loadingSlider.value = 0f;
+        loadingSlider.interactable = false;
     }
 
     public void StartLoading()

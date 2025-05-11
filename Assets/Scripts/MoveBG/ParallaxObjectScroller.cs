@@ -20,7 +20,7 @@ public class ParallaxObjectScroller : MonoBehaviour
         previousCamPos = cam.position;
     }
 
-    void LateUpdate()
+    void FixedUpdate()
     {
         Vector3 delta = cam.position - previousCamPos;
 
