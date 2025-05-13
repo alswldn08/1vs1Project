@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
     #region 레퍼런스
     private Rigidbody2D rb;
     private Weapon weapon;
-    private PlayerEnergy playerEnergy;
+    private PlayerEnergySlider playerEnergySlider;
     #endregion
 
     [SerializeField]
@@ -39,12 +39,16 @@ public class Player : MonoBehaviour
     public float dashCooldown = 1f;  // 추가된 쿨타임 변수
     float dashCooldownTimer = 0f;
 
+    public float playerHP = 100f;
+
+
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         weapon = GetComponent<Weapon>();
-        playerEnergy = GetComponent<PlayerEnergy>();
+        playerEnergySlider = GetComponent<PlayerEnergySlider>();
+        rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
     }
 
     private void Update()
@@ -66,7 +70,7 @@ public class Player : MonoBehaviour
         // 대쉬 입력 처리
         if (Input.GetKeyDown(KeyCode.LeftShift) && !isDashing && dashCooldownTimer <= 0f)
         {
-            if(playerEnergy.energy.value >= 20f)
+            if(playerEnergySlider.energy.value >= 20f)
             {
                 StartDash();
             }
@@ -109,6 +113,11 @@ public class Player : MonoBehaviour
             return; // 대쉬 중이면 일반 이동 무시
         }
 
+        if(playerHP <= 0f)
+        {
+            GameManager.i.GameOver();
+        }
+
         float move = 0f;
 
         if (weapon != null && weapon.data.isReloading)
@@ -137,12 +146,20 @@ public class Player : MonoBehaviour
         isDashing = true;
         dashTimer = dashTime;
         dashCooldownTimer = dashCooldown; // 쿨타임 초기화
-        playerEnergy.energy.value -= 20f;
+        playerEnergySlider.energy.value -= 20f;
     }
 
     public void SetWeapon(Weapon newWeapon)
     {
         weapon = newWeapon;
+    }
+
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("BodyDamageEnemy"))
+        {
+            playerHP -= 10f;
+        }
     }
 }
 

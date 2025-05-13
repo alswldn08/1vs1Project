@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Portal
+  - BodyDamageEnemy
   layers:
   - Default
   - TransparentFX

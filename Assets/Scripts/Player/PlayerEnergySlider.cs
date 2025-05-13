@@ -5,7 +5,7 @@ using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 
-public class PlayerEnergy : MonoBehaviour
+public class PlayerEnergySlider : MonoBehaviour
 {
     public Slider energy;
     public Image fillColor;
