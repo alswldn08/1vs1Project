@@ -14,6 +14,12 @@ public class BossMovement : MonoBehaviour
 
     private void Start()
     {
+
+    }
+
+
+    public void StartBossAttack()
+    {
         StartCoroutine(AttackRoutine());
     }
 
@@ -69,11 +75,11 @@ public class BossMovement : MonoBehaviour
         float elapsed = 0f;
         while (elapsed < colorChangeDuration)
         {
-            sr.color = Color.Lerp(originalColor, Color.white, elapsed / colorChangeDuration);
+            sr.color = Color.Lerp(originalColor, Color.magenta, elapsed / colorChangeDuration);
             elapsed += Time.deltaTime;
             yield return null;
         }
-        sr.color = Color.white;
+        sr.color = Color.magenta;
 
         // 공격 판정 시작
         if (col != null) col.enabled = true;
