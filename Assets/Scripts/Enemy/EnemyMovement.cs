@@ -31,37 +31,37 @@ public class EnemyMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // ÀÌµ¿
+        // ï¿½Ìµï¿½
         float direction = movingRight ? 1f : -1f;
         rb.velocity = new Vector2(direction * moveSpeed, rb.velocity.y);
 
-        // ½ºÇÁ¶óÀÌÆ® ¹ÝÀü
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
         spriteRenderer.flipX = !movingRight;
 
-        // °æ°è Ã¼Å© (¿Õº¹)
+        // ï¿½ï¿½ï¿½ Ã¼Å© (ï¿½Õºï¿½)
         if (movingRight && transform.position.x >= rightBoundaryX)
             movingRight = false;
         else if (!movingRight && transform.position.x <= leftBoundaryX)
             movingRight = true;
 
-        // º® °¨Áö
+        // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         Vector2 wallCheckOrigin = new Vector2(transform.position.x + direction * wallCheckWidthDistance, transform.position.y + wallCheckHeightDistance);
         bool wallDetected = Physics2D.Raycast(wallCheckOrigin, Vector2.right * direction, 0.1f, groundLayer);
 
-        // ¹Ù´Ú °¨Áö (¾ç¹ß)
+        // ï¿½Ù´ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½)
         Vector2 leftFoot = new Vector2(transform.position.x - footOffset, transform.position.y);
         Vector2 rightFoot = new Vector2(transform.position.x + footOffset, transform.position.y);
         bool leftGrounded = Physics2D.Raycast(leftFoot, Vector2.down, groundCheckDistance, groundLayer);
         bool rightGrounded = Physics2D.Raycast(rightFoot, Vector2.down, groundCheckDistance, groundLayer);
         bool isGrounded = leftGrounded || rightGrounded;
 
-        // Á¡ÇÁ
+        // ï¿½ï¿½ï¿½ï¿½
         if (wallDetected && isGrounded)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
 
-        // µð¹ö±×¿ë ·¹ÀÌ
+        // ï¿½ï¿½ï¿½ï¿½×¿ï¿½ ï¿½ï¿½ï¿½ï¿½
         Debug.DrawRay(wallCheckOrigin, Vector2.right * direction * 0.1f, Color.red);
         Debug.DrawRay(leftFoot, Vector2.down * groundCheckDistance, Color.green);
         Debug.DrawRay(rightFoot, Vector2.down * groundCheckDistance, Color.green);
@@ -83,7 +83,7 @@ public class EnemyMovement : MonoBehaviour
         Gizmos.DrawLine(leftFoot, leftFoot + Vector2.down * groundCheckDistance);
         Gizmos.DrawLine(rightFoot, rightFoot + Vector2.down * groundCheckDistance);
 
-        // °æ°è À§Ä¡ Ç¥½Ã
+        // ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ Ç¥ï¿½ï¿½
         Gizmos.color = Color.blue;
         Gizmos.DrawLine(new Vector3(leftBoundaryX, transform.position.y - 1f, 0), new Vector3(leftBoundaryX, transform.position.y + 1f, 0));
         Gizmos.DrawLine(new Vector3(rightBoundaryX, transform.position.y - 1f, 0), new Vector3(rightBoundaryX, transform.position.y + 1f, 0));
