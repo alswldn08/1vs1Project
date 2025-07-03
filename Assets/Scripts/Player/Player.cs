@@ -1,76 +1,94 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class Player : MonoBehaviour
 {
     #region 레퍼런스
     private Rigidbody2D rb;
     private Weapon weapon;
-    private PlayerEnergySlider playerEnergySlider;
     #endregion
+    [Header("Move")]
+    [SerializeField]bool direction = true;
+    [SerializeField] private float speed = 5f;
 
-    [SerializeField]
-    private float power;
+    [Header("Jump")]
+    [SerializeField] bool isGround;
+    [SerializeField] private Transform pos;
+    [SerializeField] private LayerMask isLayer;
+    [SerializeField] private float power;
+    [SerializeField] private float rayLength = 0.2f;
+    [SerializeField] private float footOffset = 0.2f;
 
-    [SerializeField]
-    Transform pos;
+    [Header("Dash")]
+    [SerializeField] private float dashForce = 10f;
+    [SerializeField] private float dashTime = 0.1f;
+    [SerializeField] private float dashTimer = 0f;
+    [SerializeField]private float dashCooldown = 1f;  // 추가된 쿨타임 변수
+    [SerializeField] private float dashCooldownTimer = 0f;
 
-    [SerializeField]
-    float rayLength = 0.2f;
+    [Header("Interface")]
+    public float playerHp = 100f;
+    public float playerEnergy = 100f;
 
-    [SerializeField]
-    float footOffset = 0.2f;
-
-    [SerializeField]
-    LayerMask isLayer;
-
-    public float speed = 5f;
-
-    bool isGround;
-    bool isFacingRight = true;
-
-    [SerializeField]
-    float dashForce = 10f;
-    bool isDashing = false;
-    float dashTime = 0.1f; // 대쉬 지속 시간
-    float dashTimer = 0f;
-
-    public float dashCooldown = 1f;  // 추가된 쿨타임 변수
-    float dashCooldownTimer = 0f;
-
-    public float playerHP = 100f;
-
+    [Header("Animation")]
+    public Animator animator;
+    bool isMove;
+    bool isJump;
+    bool isAttack;
+    bool isDash;
 
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         weapon = GetComponent<Weapon>();
-        playerEnergySlider = GetComponent<PlayerEnergySlider>();
+        animator = GetComponent<Animator>();
         rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
     }
 
     private void Update()
     {
         // 방향 설정
+        float move = 0f;
+
+        if (weapon != null && weapon.data.isReloading)
+        {
+            speed = 2f;
+        }
+        else
+        {
+            speed = 5f;
+        }
+
         if (Input.GetKey(KeyCode.A))
         {
-            isFacingRight = false;
+            direction = false;
+            move = -1f;
             transform.rotation = Quaternion.Euler(0, 180, 0);
+            ChangeAnimation(1);
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            isFacingRight = true;
+            direction = true;
+            move = 1f;
             transform.rotation = Quaternion.Euler(0, 0, 0);
+            ChangeAnimation(1);
         }
+        else
+        {
+            ChangeAnimation(0);
+        }
+
+            rb.velocity = new Vector2(speed * move, rb.velocity.y);
 
         dashCooldownTimer -= Time.deltaTime;
 
         // 대쉬 입력 처리
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !isDashing && dashCooldownTimer <= 0f)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !isDash && dashCooldownTimer <= 0f)
         {
-            if(playerEnergySlider.energy.value >= 20f)
+            if(playerEnergy >= 20f)
             {
                 StartDash();
             }
@@ -92,6 +110,7 @@ public class Player : MonoBehaviour
         if (isGround && Input.GetKeyDown(KeyCode.Space))
         {
             rb.velocity = new Vector2(rb.velocity.x, power);
+            ChangeAnimation(2);
         }
 
         Debug.DrawRay(leftRayOrigin, Vector2.down * rayLength, Color.red);
@@ -100,53 +119,26 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isDashing)
+        if (isDash)
         {
-            float dashDir = isFacingRight ? 1f : -1f;
+            float dashDir = direction ? 1f : -1f;
             rb.velocity = new Vector2(dashDir * dashForce, 0f); // y를 0으로 고정해서 위로 튀는 걸 방지
             dashTimer -= Time.fixedDeltaTime;
 
             if (dashTimer <= 0f)
             {
-                isDashing = false;
+                isDash = false;
             }
             return; // 대쉬 중이면 일반 이동 무시
         }
-
-        if(playerHP <= 0f)
-        {
-            GameManager.i.GameOver();
-        }
-
-        float move = 0f;
-
-        if (weapon != null && weapon.data.isReloading)
-        {
-            speed = 2f;
-        }
-        else
-        {
-            speed = 5f;
-        }
-
-        if (Input.GetKey(KeyCode.A))
-        {
-            move = -1f;
-        }
-        else if (Input.GetKey(KeyCode.D))
-        {
-            move = 1f;
-        }
-
-        rb.velocity = new Vector2(speed * move, rb.velocity.y);
     }
 
     private void StartDash()
     {
-        isDashing = true;
+        isDash = true;
         dashTimer = dashTime;
         dashCooldownTimer = dashCooldown; // 쿨타임 초기화
-        playerEnergySlider.energy.value -= 20f;
+        playerEnergy -= 20f;
     }
 
     public void SetWeapon(Weapon newWeapon)
@@ -158,8 +150,13 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("BodyDamageEnemy"))
         {
-            playerHP -= 10f;
+            playerHp -= 10f;
         }
+    }
+
+    public void ChangeAnimation(int stateNum)
+    {
+        animator.SetInteger("states", stateNum);
     }
 }
 

@@ -11,9 +11,11 @@ public class PlayerEnergySlider : MonoBehaviour
     public Image fillColor;
     private Color targetColor;
 
+    private Player player;
 
     void Start()
     {
+        player = GetComponent<Player>();
         energy.maxValue = 100f;
         energy.value = 100f;
         energy.interactable = false;
@@ -22,9 +24,15 @@ public class PlayerEnergySlider : MonoBehaviour
 
     private void Update()
     {
+
         if(energy.value < energy.maxValue)
         {
-            energy.value += 10f * Time.deltaTime;
+            player.playerEnergy += 10f * Time.deltaTime;
+            //Debug.Log("기력 회복중...");
+        }
+        else if(player.playerEnergy > energy.maxValue)
+        {
+            player.playerEnergy = energy.maxValue;
         }
 
         if (energy.value < 20f)
@@ -35,6 +43,7 @@ public class PlayerEnergySlider : MonoBehaviour
         {
             targetColor = new Color(1f, 0.6f, 0.2f);
         }
+        energy.value = player.playerEnergy;
         fillColor.color = Color.Lerp(fillColor.color, targetColor, Time.deltaTime * 5f);
     }
 }

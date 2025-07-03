@@ -11,13 +11,9 @@ public class PlayerHpSlider : MonoBehaviour
 
     private Player player;
 
-    private void Awake()
-    {
-
-        player = GetComponent<Player>();        
-    }
     void Start()
     {
+        player = GetComponent<Player>();        
         hpSlider.maxValue = 100f;
         hpSlider.value = 100f;
         hpSlider.interactable = false;
@@ -27,9 +23,15 @@ public class PlayerHpSlider : MonoBehaviour
 
     private void Update()
     {
+        if (player.playerHp <= 0f)
+        {
+            GameManager.i.GameOver();
+        }
+
         if (hpSlider.value < hpSlider.maxValue)
         {
-            hpSlider.value += 10f * Time.deltaTime;
+            player.playerHp += 0.5f * Time.deltaTime;
+            //Debug.Log("체력 회복중...");
         }
 
         if (hpSlider.value < 20f)
@@ -44,7 +46,7 @@ public class PlayerHpSlider : MonoBehaviour
         {
             sliderColor = Color.green;
         }
-        hpSlider.value = player.playerHP;
+        hpSlider.value = player.playerHp;
         hpSliderColor.color = Color.Lerp(hpSliderColor.color, sliderColor, Time.deltaTime * 5f);
     }
 }
