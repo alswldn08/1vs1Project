@@ -14,10 +14,17 @@ public struct Data
 public abstract class Weapon : MonoBehaviour
 {
     public Data data;
-    private TitleUI titleUI;
+    private WeaponUI weaponUI;
     private WeaponController WController;
     private Glock glock;
     private Rifle rifle;
+
+    protected Player player;
+
+    public void SetPlayer(Player p)
+    {
+        player = p;
+    }
 
     public abstract void InitSetting();
 
@@ -27,16 +34,18 @@ public abstract class Weapon : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(1))
             {
+
                 if (data.currentBullet > 0)
                 {
+                    player?.ChangeAnimation(3, 1f);
                     GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
                     float direction = transform.eulerAngles.y == 180 ? -1f : 1f;
                     bullet.GetComponent<Bullet>().SetDirection(direction);
                     data.currentBullet--;
 
-                    if (titleUI != null)
+                    if (weaponUI != null)
                     {
-                        titleUI.CountBullet(this);
+                        weaponUI.CountBullet(this);
                     }
                     else
                     {
@@ -54,16 +63,18 @@ public abstract class Weapon : MonoBehaviour
         {
             if (Input.GetMouseButton(1))
             {
+
                 if (data.currentBullet > 0)
                 {
+                    player?.ChangeAnimation(3, 1f);
                     GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
                     float direction = transform.eulerAngles.y == 180 ? -1f : 1f;
                     bullet.GetComponent<Bullet>().SetDirection(direction);
                     data.currentBullet--;
 
-                    if (titleUI != null)
+                    if (weaponUI != null)
                     {
-                        titleUI.CountBullet(this);
+                        weaponUI.CountBullet(this);
                     }
                     else
                     {
@@ -92,9 +103,9 @@ public abstract class Weapon : MonoBehaviour
 
         data.isReloading = false;
 
-        if (titleUI != null)
+        if (weaponUI != null)
         {
-            titleUI.CountBullet(this);
+            weaponUI.CountBullet(this);
         }
         else
         {
@@ -105,12 +116,12 @@ public abstract class Weapon : MonoBehaviour
     protected virtual void Start()
     {
         data.currentBullet = data.maxBullet;
-        titleUI = FindObjectOfType<TitleUI>();
+        weaponUI = FindObjectOfType<WeaponUI>();
         WController = FindObjectOfType<WeaponController>();
         glock = FindObjectOfType<Glock>();
         rifle = FindObjectOfType<Rifle>();
 
-        if (titleUI == null)
+        if (weaponUI == null)
         {
             Debug.LogError("UIManager를 찾을 수 없습니다.");
         }
