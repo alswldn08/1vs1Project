@@ -47,6 +47,7 @@ public class MoveSceneManager : MonoBehaviour
             {
                 LoadingUI.i.StartLoading();
             }
+            
         }
     }
 }

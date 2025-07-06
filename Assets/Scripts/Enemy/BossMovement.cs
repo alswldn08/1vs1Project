@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BossMovement : MonoBehaviour
 {
+    private BossHP bossHP;
     public GameObject[] attackObjects; // 공격 위치 오브젝트들 (미리 비활성화)
     [SerializeField] private float warningTime = 1f;   // 깜빡이는 시간
     [SerializeField] private float hitDuration = 1f;   // 공격 판정 시간
@@ -14,12 +15,22 @@ public class BossMovement : MonoBehaviour
 
     private void Start()
     {
+        bossHP = FindObjectOfType<BossHP>();
 
+    }
+
+    private void Update()
+    {
+        if (bossHP.hpSlider.gameObject.activeSelf && bossHP.hpSlider.value <= 0)
+        {
+            StopAllCoroutines();
+        }
     }
 
 
     public void StartBossAttack()
     {
+        bossHP.bossUI.SetActive(true);
         StartCoroutine(AttackRoutine());
     }
 

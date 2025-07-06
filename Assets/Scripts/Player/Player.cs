@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public class Player : MonoBehaviour
 {
@@ -11,12 +10,13 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     private Weapon weapon;
     #endregion
+
     [Header("Move")]
-    [SerializeField]bool direction = true;
+    [SerializeField] private bool direction = true;
     [SerializeField] private float speed = 5f;
 
     [Header("Jump")]
-    [SerializeField] bool isGround;
+    [SerializeField] private bool isGround;
     [SerializeField] private Transform pos;
     [SerializeField] private LayerMask isLayer;
     [SerializeField] private float power;
@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float dashForce = 10f;
     [SerializeField] private float dashTime = 0.1f;
     [SerializeField] private float dashTimer = 0f;
-    [SerializeField]private float dashCooldown = 1f;  // 추가된 쿨타임 변수
+    [SerializeField] private float dashCooldown = 1f;
     [SerializeField] private float dashCooldownTimer = 0f;
 
     [Header("Interface")]
@@ -36,12 +36,18 @@ public class Player : MonoBehaviour
 
     [Header("Animation")]
     public Animator animator;
-    bool isDash;
+    private bool isDash;
     private int currentAnimState = -1;
     private bool isAnimLocked = false;
     private float animLockTimer = 0f;
 
+    private bool isJumping = false;
 
+    private void Awake()
+    {
+        if (i == null)
+            i = this;
+    }
 
     private void Start()
     {
@@ -53,8 +59,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        // 애니메이션 락 타이머 감소
-        if (animLockTimer > 0f)
+        if (isAnimLocked)
         {
             animLockTimer -= Time.deltaTime;
             if (animLockTimer <= 0f)
@@ -63,24 +68,63 @@ public class Player : MonoBehaviour
             }
         }
 
-        // 이동/점프 입력은 애니메이션 3번 잠금 중일 땐 차단
+        bool wasGround = isGround;
+        Vector2 leftRayOrigin = new Vector2(pos.position.x - footOffset, pos.position.y);
+        Vector2 rightRayOrigin = new Vector2(pos.position.x + footOffset, pos.position.y);
+        RaycastHit2D leftHit = Physics2D.Raycast(leftRayOrigin, Vector2.down, rayLength, isLayer);
+        RaycastHit2D rightHit = Physics2D.Raycast(rightRayOrigin, Vector2.down, rayLength, isLayer);
+        isGround = leftHit.collider != null || rightHit.collider != null;
+
+        // 착지 시 점프 애니 강제 종료 + 달리기 애니로 전환
+        if (isJumping && isGround && !wasGround)
+        {
+            isJumping = false;
+            isAnimLocked = false;
+            animLockTimer = 0f;
+
+            animator.Play("Run", 0); // 또는 "Idle"
+            animator.SetInteger("states", 1);
+            currentAnimState = 1;
+        }
+
+        // 대시 입력 (가장 우선시되어야 하므로 위에서 처리)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !isDash && dashCooldownTimer <= 0f)
+        {
+            if (playerEnergy >= 20f)
+            {
+                StartDash();
+                return;
+            }
+            else
+            {
+                Debug.Log("스테미너 부족!");
+            }
+        }
+
+        dashCooldownTimer -= Time.deltaTime;
+
+        // 점프 입력
+        if (isGround && Input.GetKeyDown(KeyCode.Space))
+        {
+            rb.velocity = new Vector2(rb.velocity.x, power);
+            isJumping = true;
+            ChangeAnimation(2, 0f, true); // 점프 애니메이션 실행
+            return;
+        }
+
+        // 대시 중에는 다른 애니메이션 실행 금지
+        if (isDash) return;
+
+        // 애니메이션 3번 락 중엔 이동 불가
         if (isAnimLocked && currentAnimState == 3)
         {
-            rb.velocity = new Vector2(0, rb.velocity.y); // 움직임 멈춤
+            rb.velocity = new Vector2(0, rb.velocity.y);
         }
         else
         {
-            // 방향 입력 처리
             float move = 0f;
 
-            if (weapon != null && weapon.data.isReloading)
-            {
-                speed = 2f;
-            }
-            else if (weapon != null && !weapon.data.isReloading)
-            {
-                speed = 5f;
-            }
+            speed = (weapon != null && weapon.data.isReloading) ? 2f : 5f;
 
             if (Input.GetKey(KeyCode.A))
             {
@@ -99,53 +143,38 @@ public class Player : MonoBehaviour
 
             rb.velocity = new Vector2(speed * move, rb.velocity.y);
 
-            // 점프 처리
-            Vector2 leftRayOrigin = new Vector2(pos.position.x - footOffset, pos.position.y);
-            Vector2 rightRayOrigin = new Vector2(pos.position.x + footOffset, pos.position.y);
-
-            RaycastHit2D leftHit = Physics2D.Raycast(leftRayOrigin, Vector2.down, rayLength, isLayer);
-            RaycastHit2D rightHit = Physics2D.Raycast(rightRayOrigin, Vector2.down, rayLength, isLayer);
-
-            isGround = leftHit.collider != null || rightHit.collider != null;
-
-            if (isGround && Input.GetKeyDown(KeyCode.Space))
+            if (move == 0f && rb.velocity.y == 0 && isGround && !isJumping)
             {
-                rb.velocity = new Vector2(rb.velocity.x, power);
-                ChangeAnimation(2);
+                ChangeAnimation(0);
             }
         }
 
-        // 애니메이션 락이 풀렸고 멈춰있는 상태라면 애니메이션을 0번(Idle)로 돌려줌
-        if (!isDash && !weapon.data.isReloading && rb.velocity.x == 0 && isGround)
-        {
-            ChangeAnimation(0);
-        }
-
-        dashCooldownTimer -= Time.deltaTime;
-
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !isDash && dashCooldownTimer <= 0f)
-        {
-            if (playerEnergy >= 20f)
-            {
-                StartDash();
-            }
-            else
-            {
-                Debug.Log("스테미너 부족!");
-            }
-        }
-
-        Debug.DrawRay(new Vector2(pos.position.x - footOffset, pos.position.y), Vector2.down * rayLength, Color.red);
-        Debug.DrawRay(new Vector2(pos.position.x + footOffset, pos.position.y), Vector2.down * rayLength, Color.red);
+        Debug.DrawRay(leftRayOrigin, Vector2.down * rayLength, Color.red);
+        Debug.DrawRay(rightRayOrigin, Vector2.down * rayLength, Color.red);
     }
 
+    private void FixedUpdate()
+    {
+        if (isDash)
+        {
+            float dashDir = direction ? 1f : -1f;
+            rb.velocity = new Vector2(dashDir * dashForce, 0f);
+            dashTimer -= Time.fixedDeltaTime;
+
+            if (dashTimer <= 0f)
+            {
+                isDash = false;
+            }
+        }
+    }
 
     private void StartDash()
     {
         isDash = true;
         dashTimer = dashTime;
-        dashCooldownTimer = dashCooldown; // 쿨타임 초기화
+        dashCooldownTimer = dashCooldown;
         playerEnergy -= 20f;
+        ChangeAnimation(4, dashTime, true); // 대시 애니메이션(4) 강제 실행
     }
 
     public void SetWeapon(Weapon newWeapon)
@@ -161,10 +190,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void ChangeAnimation(int stateNum, float lockDuration = 0f)
+    public void ChangeAnimation(int stateNum, float lockDuration = 0f, bool ignoreLock = false)
     {
-        if (isAnimLocked) return;
-
+        if (isAnimLocked && !ignoreLock) return;
         if (currentAnimState == stateNum) return;
 
         animator.SetInteger("states", stateNum);
@@ -176,6 +204,4 @@ public class Player : MonoBehaviour
             animLockTimer = lockDuration;
         }
     }
-
 }
-

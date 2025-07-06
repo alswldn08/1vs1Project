@@ -1,8 +1,7 @@
-    using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections;
 using static UnityEngine.EventSystems.EventTrigger;
 
 public class LoadingUI : MonoBehaviour
@@ -14,6 +13,9 @@ public class LoadingUI : MonoBehaviour
     [Header("Image")]
     public Image loadingPG;
 
+    private Rigidbody2D playerRb; // 나중에 할당
+
+    private Coroutine randomCoroutine;
     public int randomValue;
 
     private void Awake()
@@ -23,46 +25,78 @@ public class LoadingUI : MonoBehaviour
             i = this;
         }
 
+        // UI 초기화
         loadingPG.gameObject.SetActive(false);
-
         loadingSlider.maxValue = 100f;
         loadingSlider.value = 0f;
         loadingSlider.interactable = false;
+
+        // Player의 Rigidbody2D 찾기
+        GameObject player = GameObject.FindWithTag("Player");
+        if (player != null)
+        {
+            playerRb = player.GetComponent<Rigidbody2D>();
+        }
+
+        if (playerRb == null)
+        {
+            Debug.LogError("Player의 Rigidbody2D를 찾을 수 없습니다.");
+        }
     }
 
     public void StartLoading()
     {
         loadingPG.gameObject.SetActive(true);
-        StartCoroutine(RandomValue());
-    }
 
+        if (playerRb != null)
+        {
+            playerRb.velocity = Vector2.zero;
+            playerRb.constraints = RigidbodyConstraints2D.FreezeAll;
+        }
+
+        loadingSlider.value = 0f;
+        randomCoroutine = StartCoroutine(RandomValue());
+    }
 
     private void FixedUpdate()
     {
-        loadingSlider.value += randomValue * Time.deltaTime;
-
-        if (loadingSlider.value == loadingSlider.maxValue)
+        if (loadingPG.gameObject.activeSelf)
         {
-            string sceneName = SceneManager.GetActiveScene().name;
+            loadingSlider.value += randomValue * Time.deltaTime;
 
-            switch (sceneName)
+            if (loadingSlider.value >= loadingSlider.maxValue)
             {
-                case "Title":
-                    SceneManager.LoadScene("Stage1");
-                    break;
-                case "Stage1":
-                    MoveSceneManager.i.MoveScene2();
-                    break;
-                case "Stage2":
-                    MoveSceneManager.i.MoveScene3();
-                    break;
-                case "Stage3":
-                    MoveSceneManager.i.MoveScene1();
-                    break;
-            }
+                if (randomCoroutine != null)
+                {
+                    StopCoroutine(randomCoroutine);
+                    randomCoroutine = null;
+                }
 
-            //loadingPG.gameObject.SetActive(false);
-            StopCoroutine(RandomValue());
+                // 플레이어 다시 움직일 수 있도록 풀기
+                if (playerRb != null)
+                {
+                    playerRb.constraints = RigidbodyConstraints2D.None; // 잠금 해제
+                    playerRb.constraints = RigidbodyConstraints2D.FreezeRotation; // 회전만 고정
+                }
+
+                string sceneName = SceneManager.GetActiveScene().name;
+
+                switch (sceneName)
+                {
+                    case "Title":
+                        SceneManager.LoadScene("Stage1");
+                        break;
+                    case "Stage1":
+                        MoveSceneManager.i.MoveScene2();
+                        break;
+                    case "Stage2":
+                        MoveSceneManager.i.MoveScene3();
+                        break;
+                    case "Stage3":
+                        MoveSceneManager.i.MoveScene1();
+                        break;
+                }
+            }
         }
     }
 
@@ -71,7 +105,6 @@ public class LoadingUI : MonoBehaviour
         while (true)
         {
             randomValue = Random.Range(5, 20);
-
             yield return new WaitForSeconds(3);
         }
     }

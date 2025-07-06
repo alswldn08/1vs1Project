@@ -7,6 +7,8 @@ TagManager:
   - Enemy
   - Portal
   - BodyDamageEnemy
+  - Boss
+  - Bullet
   layers:
   - Default
   - TransparentFX
