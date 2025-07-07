@@ -10,9 +10,9 @@ public class ParallaxObjectScroller : MonoBehaviour
         public float parallaxFactorY = 0.5f; // Y축 패럴럭스 정도
     }
 
-    public ParallaxLayer[] layers;           // 레이어 배열
-    private Transform cam;                   // 메인 카메라
-    private Vector3 previousCamPos;          // 이전 프레임 카메라 위치
+    public ParallaxLayer[] layers;
+    private Transform cam;
+    private Vector3 previousCamPos;
 
     void Start()
     {
@@ -28,7 +28,7 @@ public class ParallaxObjectScroller : MonoBehaviour
         {
             if (layer.target == null) continue;
 
-            // 축별로 다르게 패럴럭스 적용
+            // 축별 패럴럭스 적용
             float moveX = delta.x * layer.parallaxFactorX;
             float moveY = delta.y * layer.parallaxFactorY;
 

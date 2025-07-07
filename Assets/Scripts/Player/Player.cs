@@ -43,6 +43,8 @@ public class Player : MonoBehaviour
 
     private bool isJumping = false;
 
+
+
     private void Awake()
     {
         if (i == null)
@@ -59,6 +61,11 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        if(playerHp <= 0f)
+        {
+            GameManager.i.GameOver();
+        }
+        // 애니메이션 락 타이머 갱신
         if (isAnimLocked)
         {
             animLockTimer -= Time.deltaTime;
@@ -68,6 +75,7 @@ public class Player : MonoBehaviour
             }
         }
 
+        // 바닥 체크 (좌우 발끝 기준으로 Ray 발사)
         bool wasGround = isGround;
         Vector2 leftRayOrigin = new Vector2(pos.position.x - footOffset, pos.position.y);
         Vector2 rightRayOrigin = new Vector2(pos.position.x + footOffset, pos.position.y);
@@ -75,29 +83,24 @@ public class Player : MonoBehaviour
         RaycastHit2D rightHit = Physics2D.Raycast(rightRayOrigin, Vector2.down, rayLength, isLayer);
         isGround = leftHit.collider != null || rightHit.collider != null;
 
-        // 착지 시 점프 애니 강제 종료 + 달리기 애니로 전환
+        // 착지 시 점프 상태 초기화 및 애니메이션 전환
         if (isJumping && isGround && !wasGround)
         {
             isJumping = false;
             isAnimLocked = false;
             animLockTimer = 0f;
-
-            animator.Play("Run", 0); // 또는 "Idle"
+            animator.Play("Run", 0);
             animator.SetInteger("states", 1);
             currentAnimState = 1;
         }
 
-        // 대시 입력 (가장 우선시되어야 하므로 위에서 처리)
+        // 대시 입력
         if (Input.GetKeyDown(KeyCode.LeftShift) && !isDash && dashCooldownTimer <= 0f)
         {
             if (playerEnergy >= 20f)
             {
                 StartDash();
                 return;
-            }
-            else
-            {
-                Debug.Log("스테미너 부족!");
             }
         }
 
@@ -108,14 +111,13 @@ public class Player : MonoBehaviour
         {
             rb.velocity = new Vector2(rb.velocity.x, power);
             isJumping = true;
-            ChangeAnimation(2, 0f, true); // 점프 애니메이션 실행
+            ChangeAnimation(2, 0f, true); // 점프 애니메이션
             return;
         }
 
-        // 대시 중에는 다른 애니메이션 실행 금지
         if (isDash) return;
 
-        // 애니메이션 3번 락 중엔 이동 불가
+        // 공격 애니메이션 도중 이동 제한
         if (isAnimLocked && currentAnimState == 3)
         {
             rb.velocity = new Vector2(0, rb.velocity.y);
@@ -131,21 +133,21 @@ public class Player : MonoBehaviour
                 direction = false;
                 move = -1f;
                 transform.rotation = Quaternion.Euler(0, 180, 0);
-                ChangeAnimation(1);
+                ChangeAnimation(1); // 걷기
             }
             else if (Input.GetKey(KeyCode.D))
             {
                 direction = true;
                 move = 1f;
                 transform.rotation = Quaternion.Euler(0, 0, 0);
-                ChangeAnimation(1);
+                ChangeAnimation(1); // 걷기
             }
 
             rb.velocity = new Vector2(speed * move, rb.velocity.y);
 
             if (move == 0f && rb.velocity.y == 0 && isGround && !isJumping)
             {
-                ChangeAnimation(0);
+                ChangeAnimation(0); // 정지
             }
         }
 
@@ -155,6 +157,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // 대시 중 물리 이동
         if (isDash)
         {
             float dashDir = direction ? 1f : -1f;
@@ -174,7 +177,7 @@ public class Player : MonoBehaviour
         dashTimer = dashTime;
         dashCooldownTimer = dashCooldown;
         playerEnergy -= 20f;
-        ChangeAnimation(4, dashTime, true); // 대시 애니메이션(4) 강제 실행
+        ChangeAnimation(4, dashTime, true); // 대시 애니메이션
     }
 
     public void SetWeapon(Weapon newWeapon)

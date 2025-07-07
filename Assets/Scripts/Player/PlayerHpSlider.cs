@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class PlayerHpSlider : MonoBehaviour
 {
     public Slider hpSlider;
-    public Image hpSliderColor;
+    public Image hpSliderColor; //슬라이더 색상 이미지
     private Color sliderColor;
 
     private Player player;
@@ -23,15 +23,10 @@ public class PlayerHpSlider : MonoBehaviour
 
     private void Update()
     {
-        if (player.playerHp <= 0f)
-        {
-            GameManager.i.GameOver();
-        }
 
         if (hpSlider.value < hpSlider.maxValue)
         {
             player.playerHp += 0.5f * Time.deltaTime;
-            //Debug.Log("체력 회복중...");
         }
 
         if (hpSlider.value < 20f)

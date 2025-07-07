@@ -13,11 +13,18 @@ public class MoveSceneManager : MonoBehaviour
         if(i == null)
         {
             i = this;
-
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
         }
 
     }
-
+    public void MoveTitle()
+    {
+        SceneManager.LoadScene("Title");
+    }
     public void MoveScene1()
     {
         SceneManager.LoadScene("Stage1");
@@ -31,23 +38,23 @@ public class MoveSceneManager : MonoBehaviour
         SceneManager.LoadScene("Stage3");
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            if (SceneManager.GetActiveScene().name == "Stage1")
-            {
-                LoadingUI.i.StartLoading();
-            }
-            else if (SceneManager.GetActiveScene().name == "Stage2")
-            {
-                LoadingUI.i.StartLoading();
-            }
-            else
-            {
-                LoadingUI.i.StartLoading();
-            }
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Player"))
+    //    {
+    //        if (SceneManager.GetActiveScene().name == "Stage1")
+    //        {
+    //            LoadingUI.i.StartLoading();
+    //        }
+    //        else if (SceneManager.GetActiveScene().name == "Stage2")
+    //        {
+    //            LoadingUI.i.StartLoading();
+    //        }
+    //        else
+    //        {
+    //            LoadingUI.i.StartLoading();
+    //        }
             
-        }
-    }
+    //    }
+    //}
 }

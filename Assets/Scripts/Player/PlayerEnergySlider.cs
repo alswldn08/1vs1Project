@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class PlayerEnergySlider : MonoBehaviour
 {
     public Slider energy;
-    public Image fillColor;
+    public Image fillColor; //슬라이더 색상 이미지
     private Color targetColor;
 
     private Player player;
@@ -28,7 +28,6 @@ public class PlayerEnergySlider : MonoBehaviour
         if(energy.value < energy.maxValue)
         {
             player.playerEnergy += 10f * Time.deltaTime;
-            //Debug.Log("기력 회복중...");
         }
         else if(player.playerEnergy > energy.maxValue)
         {

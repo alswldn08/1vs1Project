@@ -5,14 +5,11 @@ public class ParallaxMaterialScroller : MonoBehaviour
     [System.Serializable]
     public class ParallaxMaterialLayer
     {
-        public Material material;      // ������ ��Ƽ����
-        public float parallaxFactor;   // ������ ���� (0~1)
-        public Vector2 direction = Vector2.right; // �⺻ x ���� ��ũ��
-        [HideInInspector]
-        public Vector2 currentOffset = Vector2.zero;
-
-        [HideInInspector]
-        public string textureProperty = "_MainTex"; // �⺻��
+        public Material material;                   // 스크롤 대상 머티리얼
+        public float parallaxFactor;                // 패럴럭스 강도 (0~1)
+        public Vector2 direction = Vector2.right;   // 스크롤 방향
+        [HideInInspector] public Vector2 currentOffset = Vector2.zero;
+        [HideInInspector] public string textureProperty = "_MainTex"; // 텍스처 속성명
     }
 
     public ParallaxMaterialLayer[] layers;
@@ -24,12 +21,11 @@ public class ParallaxMaterialScroller : MonoBehaviour
         cam = Camera.main.transform;
         previousCamPos = cam.position;
 
-        // offset �ʱ�ȭ �� �ؽ�ó �Ӽ� �̸� ����
         foreach (ParallaxMaterialLayer layer in layers)
         {
             if (layer.material == null) continue;
 
-            // URP ȣȯ�� �Ӽ� Ȯ��
+            // URP 호환 처리
             if (layer.material.HasProperty("_BaseMap"))
                 layer.textureProperty = "_BaseMap";
             else

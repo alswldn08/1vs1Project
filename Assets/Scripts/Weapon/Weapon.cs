@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct Data
+public struct Data //전략패턴으로 사용될 데이터
 {
     public int maxBullet;
     public int currentBullet; //현재 남은 총알 개수
-    public float reloadTime;
-    public float coolTime;
-    public bool isReloading;
+    public float reloadTime; //재장전 시간
+    public float coolTime; 
+    public bool isReloading; 
 }
 
 public abstract class Weapon : MonoBehaviour

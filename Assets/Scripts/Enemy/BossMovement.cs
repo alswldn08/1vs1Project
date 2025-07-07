@@ -5,28 +5,27 @@ using UnityEngine;
 public class BossMovement : MonoBehaviour
 {
     private BossHP bossHP;
-    public GameObject[] attackObjects; // °ø°İ À§Ä¡ ¿ÀºêÁ§Æ®µé (¹Ì¸® ºñÈ°¼ºÈ­)
-    [SerializeField] private float warningTime = 1f;   // ±ôºıÀÌ´Â ½Ã°£
-    [SerializeField] private float hitDuration = 1f;   // °ø°İ ÆÇÁ¤ ½Ã°£
-    [SerializeField] private float delayBetweenAttacks = 1f; // ´ÙÀ½ °ø°İ±îÁö ´ë±â ½Ã°£
-    [SerializeField] private int simultaneousCount = 3;
-
+    public GameObject[] attackObjects;
+    [SerializeField] private float warningTime = 1f;
+    [SerializeField] private float hitDuration = 1f;
+    [SerializeField] private float delayBetweenAttacks = 1f; // ê³µê²© ê°„ ë”œë ˆì´ ì‹œê°„
+    [SerializeField] private int simultaneousCount = 3; // ë™ì‹œì— ê³µê²©í•  ì˜¤ë¸Œì íŠ¸ ìˆ˜
+    public GameObject potal;
     public bool isLooping = true;
 
     private void Start()
     {
         bossHP = FindObjectOfType<BossHP>();
-
     }
 
     private void Update()
     {
         if (bossHP.hpSlider.gameObject.activeSelf && bossHP.hpSlider.value <= 0)
         {
-            StopAllCoroutines();
+            StopAllCoroutines(); // ë³´ìŠ¤ê°€ ì£½ìœ¼ë©´ ê³µê²© ì¤‘ì§€
+            potal.SetActive(true); 
         }
     }
-
 
     public void StartBossAttack()
     {
@@ -38,7 +37,7 @@ public class BossMovement : MonoBehaviour
     {
         while (isLooping)
         {
-            // 1. ·£´ıÀ¸·Î simultaneousCount °³ ¼±ÅÃ
+            // ëœë¤ìœ¼ë¡œ simultaneousCount ê°œì˜ ê³µê²© ì˜¤ë¸Œì íŠ¸ ì„ íƒ
             List<GameObject> selected = new List<GameObject>();
             while (selected.Count < simultaneousCount)
             {
@@ -47,24 +46,23 @@ public class BossMovement : MonoBehaviour
                     selected.Add(candidate);
             }
 
-            // 2. °¢°¢À» º´·Ä·Î ½ÇÇà
+            // ê³µê²© ì‹¤í–‰
             List<Coroutine> runningCoroutines = new List<Coroutine>();
             foreach (var obj in selected)
             {
                 runningCoroutines.Add(StartCoroutine(AttackSequence(obj)));
             }
 
-            // 3. ¸ğµÎ ³¡³¯ ¶§±îÁö ´ë±â
+            // ëª¨ë“  ê³µê²©ì´ ëë‚  ë•Œê¹Œì§€ ëŒ€ê¸°
             foreach (var co in runningCoroutines)
             {
                 yield return co;
             }
 
-            // 4. ´ÙÀ½ °ø°İ±îÁö ´ë±â
+            // ë‹¤ìŒ ê³µê²© ì „ ë”œë ˆì´
             yield return new WaitForSeconds(delayBetweenAttacks);
         }
     }
-
 
     private IEnumerator AttackSequence(GameObject obj)
     {
@@ -78,10 +76,10 @@ public class BossMovement : MonoBehaviour
         if (col != null) col.enabled = false;
         if (childEffect != null) childEffect.SetActive(false);
 
-        // ±ôºıÀÓ
+        // ê²½ê³  ì´í™íŠ¸
         yield return StartCoroutine(BlinkEffect(sr, warningTime));
 
-        // Èò»öÀ¸·Î ÀüÈ¯
+        // ìƒ‰ìƒ ë³€ê²½ (ê³µê²© ì‹œì‘ í‘œì‹œ)
         float colorChangeDuration = 0.2f;
         float elapsed = 0f;
         while (elapsed < colorChangeDuration)
@@ -92,20 +90,18 @@ public class BossMovement : MonoBehaviour
         }
         sr.color = Color.magenta;
 
-        // °ø°İ ÆÇÁ¤ ½ÃÀÛ
+        // ê³µê²© ì‹œì‘
         if (col != null) col.enabled = true;
         if (childEffect != null) childEffect.SetActive(true);
 
         yield return new WaitForSeconds(hitDuration);
 
-        // °ø°İ ÆÇÁ¤ Á¾·á
+        // ê³µê²© ì¢…ë£Œ
         if (col != null) col.enabled = false;
         if (childEffect != null) childEffect.SetActive(false);
         obj.SetActive(false);
         sr.color = originalColor;
     }
-
-
 
     private IEnumerator BlinkEffect(SpriteRenderer sr, float duration)
     {
@@ -126,9 +122,6 @@ public class BossMovement : MonoBehaviour
             yield return null;
         }
 
-        // ±ôºıÀÓ ³¡³µÀ» ¶§ ¿ø·¡ »ö»ó(ºÒÅõ¸í)À¸·Î º¹¿ø
         sr.color = originalColor;
     }
-
-
 }

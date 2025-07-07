@@ -2,12 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BossCutScene : MonoBehaviour
+public class BossCutScene : MonoBehaviour //ì•„ì§ ì ìš©ì•ˆí•¨
 {
-    [Header("ÄÆ½Å ÀÌ¹ÌÁöµé (¼ø¼­´ë·Î ³Ö±â)")]
+    [Header("ì»·ì”¬ ì´ë¯¸ì§€ë“¤")]
     [SerializeField] private List<Image> cutsceneImages;
 
-    [Header("´ëÈ­ ½ÃÀÛ Æ®¸®°Å ¿ÀºêÁ§Æ®")]
+    [Header("ì»·ì”¬ íŠ¸ë¦¬ê±° ì˜¤ë¸Œì íŠ¸")]
     [SerializeField] private GameObject talkTrigger;
 
     private int currentIndex = 0;
@@ -15,7 +15,7 @@ public class BossCutScene : MonoBehaviour
 
     private void Start()
     {
-        // ¸ğµç ÄÆ½Å ÀÌ¹ÌÁö ºñÈ°¼ºÈ­
+        // ì‹œì‘ ì‹œ ëª¨ë“  ì»·ì”¬ ì´ë¯¸ì§€ ë¹„í™œì„±í™”
         foreach (var image in cutsceneImages)
         {
             image.gameObject.SetActive(false);
@@ -26,6 +26,7 @@ public class BossCutScene : MonoBehaviour
     {
         if (!isCutSceneActive) return;
 
+        // ë§ˆìš°ìŠ¤ í´ë¦­ ì‹œ ë‹¤ìŒ ì»·ì”¬ ì´ë¯¸ì§€ í‘œì‹œ
         if (Input.GetMouseButtonDown(0))
         {
             ShowNextImage();
@@ -34,13 +35,13 @@ public class BossCutScene : MonoBehaviour
 
     private void ShowNextImage()
     {
-        // ÀÌÀü ÀÌ¹ÌÁö ºñÈ°¼ºÈ­
+        // ì´ì „ ì´ë¯¸ì§€ ìˆ¨ê¸°ê¸°
         if (currentIndex > 0)
         {
             cutsceneImages[currentIndex - 1].gameObject.SetActive(false);
         }
 
-        // ´ÙÀ½ ÀÌ¹ÌÁö°¡ ÀÖ´Ù¸é º¸¿©ÁÜ
+        // ë‹¤ìŒ ì´ë¯¸ì§€ í‘œì‹œ ë˜ëŠ” ì»·ì”¬ ì¢…ë£Œ
         if (currentIndex < cutsceneImages.Count)
         {
             cutsceneImages[currentIndex].gameObject.SetActive(true);
@@ -56,16 +57,16 @@ public class BossCutScene : MonoBehaviour
     {
         isCutSceneActive = true;
         currentIndex = 0;
-        Time.timeScale = 0f; // °ÔÀÓ ¸ØÃã
-        ShowNextImage();     // Ã¹ ÀÌ¹ÌÁö º¸¿©ÁÜ
+        Time.timeScale = 0f; // ê²Œì„ ì¼ì‹œì •ì§€
+        ShowNextImage();     // ì²« ì´ë¯¸ì§€ í‘œì‹œ
     }
 
     private void EndCutScene()
     {
         isCutSceneActive = false;
-        Time.timeScale = 1f; // °ÔÀÓ Àç°³
+        Time.timeScale = 1f; // ê²Œì„ ì¬ê°œ
 
-        // ¸¶Áö¸· ÀÌ¹ÌÁö ²ô±â
+        // ë§ˆì§€ë§‰ ì»·ì”¬ ì´ë¯¸ì§€ ë¹„í™œì„±í™”
         if (cutsceneImages.Count > 0)
             cutsceneImages[cutsceneImages.Count - 1].gameObject.SetActive(false);
     }

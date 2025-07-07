@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public class LoadingUI : MonoBehaviour
 {
@@ -13,10 +12,15 @@ public class LoadingUI : MonoBehaviour
     [Header("Image")]
     public Image loadingPG;
 
-    private Rigidbody2D playerRb; // ³ªÁß¿¡ ÇÒ´ç
+    private Rigidbody2D playerRb; // í”Œë ˆì´ì–´ì˜ Rigidbody2D
 
     private Coroutine randomCoroutine;
     public int randomValue;
+
+    [Header("í¬íƒˆì— ë“¤ì–´ê°€ë©´ ë¹„í™œì„±í™”")]
+    public GameObject weapon;
+    public GameObject sliders;
+
 
     private void Awake()
     {
@@ -25,13 +29,13 @@ public class LoadingUI : MonoBehaviour
             i = this;
         }
 
-        // UI ÃÊ±âÈ­
+        // UI ì´ˆê¸°í™”
         loadingPG.gameObject.SetActive(false);
         loadingSlider.maxValue = 100f;
         loadingSlider.value = 0f;
         loadingSlider.interactable = false;
 
-        // PlayerÀÇ Rigidbody2D Ã£±â
+        // í”Œë ˆì´ì–´ Rigidbody2D ì°¾ê¸°
         GameObject player = GameObject.FindWithTag("Player");
         if (player != null)
         {
@@ -40,17 +44,22 @@ public class LoadingUI : MonoBehaviour
 
         if (playerRb == null)
         {
-            Debug.LogError("PlayerÀÇ Rigidbody2D¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.");
+            Debug.LogError("Playerì˜ Rigidbody2Dë¥¼ ì°¾ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.");
         }
     }
 
     public void StartLoading()
     {
-        loadingPG.gameObject.SetActive(true);
+        if (weapon != null && sliders != null)
+        {
+            weapon.SetActive(false);
+            sliders.SetActive(false);
+        }
+            loadingPG.gameObject.SetActive(true);
 
         if (playerRb != null)
         {
-            playerRb.velocity = Vector2.zero;
+            playerRb.velocity = Vector2.zero; //ë¡œë”© ì¤‘ì—ëŠ” í”Œë ˆì´ì–´ ì›€ì§ì„ ë´‰ì¸
             playerRb.constraints = RigidbodyConstraints2D.FreezeAll;
         }
 
@@ -69,22 +78,28 @@ public class LoadingUI : MonoBehaviour
                 if (randomCoroutine != null)
                 {
                     StopCoroutine(randomCoroutine);
+                    if(weapon != null && sliders != null)
+                    {
+                        weapon.SetActive(true);
+                        sliders.SetActive(true);
+                    }
                     randomCoroutine = null;
                 }
 
-                // ÇÃ·¹ÀÌ¾î ´Ù½Ã ¿òÁ÷ÀÏ ¼ö ÀÖµµ·Ï Ç®±â
+                // í”Œë ˆì´ì–´ ì›€ì§ì„ ì œí•œ í•´ì œ
                 if (playerRb != null)
                 {
-                    playerRb.constraints = RigidbodyConstraints2D.None; // Àá±İ ÇØÁ¦
-                    playerRb.constraints = RigidbodyConstraints2D.FreezeRotation; // È¸Àü¸¸ °íÁ¤
+                    playerRb.constraints = RigidbodyConstraints2D.None;
+                    playerRb.constraints = RigidbodyConstraints2D.FreezeRotation;
                 }
 
                 string sceneName = SceneManager.GetActiveScene().name;
 
+                // í˜„ì¬ ì”¬ì— ë”°ë¼ ë‹¤ìŒ ì”¬ìœ¼ë¡œ ì´ë™
                 switch (sceneName)
                 {
                     case "Title":
-                        SceneManager.LoadScene("Stage1");
+                        MoveSceneManager.i.MoveScene1();
                         break;
                     case "Stage1":
                         MoveSceneManager.i.MoveScene2();

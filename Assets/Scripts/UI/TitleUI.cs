@@ -8,34 +8,24 @@ using UnityEngine.SceneManagement;
 public class TitleUI : MonoBehaviour
 {
     [Header("Text")]
-    public Text titleText;
+    public Text titleText; //타이틀 텍스트
     [Header("ButtonOn")]
     public Button startBtn;
     public Button settingBtn;
     public Button exitBtn;
     public Button helpBtn;
     [Header("ButtonOff")]
-    public Button settingOffBtn;
-    public Button exitYesBtn;
-    public Button exitNoBtn;
-    public Button helpOffBtn;
+    public Button settingOffBtn; //설정창 닫기
+    public Button exitYesBtn; //종료창 확인
+    public Button exitNoBtn; //종료창 취소
+    public Button helpOffBtn; //도움말창 닫기
     [Header("Page")]
-    public Image settingPG;
-    public Image exitPG;
-    public Image helpPG;
-    //[Header("WeaponUI")]
-    //public Text countRifle;
-    //public Text countGlock;
-    //private Rifle rifle;
-    //private Glock glock;
-
+    public Image settingPG; //설정 페이지
+    public Image exitPG; //나가기 페이지
+    public Image helpPG; //도움말 페이지
 
     void Start()
     {
-        //rifle = FindObjectOfType<Rifle>();
-        //glock = FindObjectOfType<Glock>();
-        //InitializeUI();
-
         startBtn.onClick.AddListener(StartBtn);
         settingBtn.onClick.AddListener(SettingBtn);
         exitBtn.onClick.AddListener(ExitBtn);
@@ -53,10 +43,9 @@ public class TitleUI : MonoBehaviour
 
     }
 
-    #region ���� ��ư
+    #region 메인 화면 버튼
     public void StartBtn()
     {
-        //SceneManager.LoadScene("Stage1");
         LoadingUI.i.StartLoading();
     }
     public void SettingBtn()
@@ -79,7 +68,7 @@ public class TitleUI : MonoBehaviour
     }
     #endregion
 
-    #region ��� ��ư
+    #region 창 내부 버튼
     public void SettingOffBtn()
     {
         settingPG.gameObject.SetActive(false);
@@ -102,36 +91,5 @@ public class TitleUI : MonoBehaviour
         exitBtn.gameObject.SetActive(true);
         helpBtn.gameObject.SetActive(true);
     }
-    #endregion
-
-    #region ����UI
-    //public void InitializeUI()
-    //{
-    //    if (rifle != null && countRifle != null)
-    //    {
-    //        countRifle.text = rifle.data.currentBullet + "/" + rifle.data.maxBullet;
-    //    }
-    //    if (glock != null && countGlock != null)
-    //    {
-    //        countGlock.text = glock.data.currentBullet + "/" + glock.data.maxBullet;
-    //    }
-    //}
-
-    //public void UpdateWeapon(Weapon newWeapon)
-    //{
-    //    CountBullet(newWeapon);
-    //}
-
-    //public void CountBullet(Weapon weapon)
-    //{
-    //    if (weapon is Rifle && countRifle != null)
-    //    {
-    //        countRifle.text = weapon.data.currentBullet + "/" + weapon.data.maxBullet;
-    //    }
-    //    else if (weapon is Glock && countGlock != null)
-    //    {
-    //        countGlock.text = weapon.data.currentBullet + "/" + weapon.data.maxBullet;
-    //    }
-    //}
     #endregion
 }
