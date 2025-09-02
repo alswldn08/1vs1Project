@@ -21,7 +21,7 @@ public class BossHP : MonoBehaviour
         }
 
         if (bossUI != null)
-            bossUI.SetActive(false); // ½ÃÀÛ ½Ã ¼û±è
+            bossUI.SetActive(false); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     }
 
     private void Update()

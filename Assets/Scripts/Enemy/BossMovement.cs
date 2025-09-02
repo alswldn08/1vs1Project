@@ -1,38 +1,18 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BossMovement : MonoBehaviour
 {
     private BossHP bossHP;
-    public GameObject[] attackObjects;
-    public Vector2 target;         // 발사 직전 플레이어 위치
-    public float speed = 5f;       // 이동 속도
-    public int curveCount = 2;     // 몇 번 꺾을지 (1~2 추천)
-    public int bulletNum = 10;
-    private Vector2 startPos;
-    private Vector2[] controlPoints;
-    private float bulletProgress = 0f;
     public GameObject potal;
-    public bool isLooping = true;
+
+    public GameObject bulletPrefab; // BossMissile 스크립트가 붙은 프리팹
+    public Transform firePoint;
+    public Transform player;
 
     private void Start()
     {
         bossHP = FindObjectOfType<BossHP>();
-
-        startPos = transform.position;
-
-        controlPoints = new Vector2[curveCount + 2];
-
-
-        for (int i = 1; i <= curveCount; i++)
-        {
-            Vector2 mid = Vector2.Lerp(startPos, target, (float)i / (curveCount + 1));
-            Vector2 offset = new Vector2(
-                Random.Range(-2f, 2f),
-                Random.Range(-2f, 2f));
-            controlPoints[i] = mid + offset;
-        }
     }
 
     private void Update()
@@ -40,7 +20,7 @@ public class BossMovement : MonoBehaviour
         if (bossHP.hpSlider.gameObject.activeSelf && bossHP.hpSlider.value <= 0)
         {
             StopAllCoroutines(); // 보스가 죽으면 공격 중지
-            potal.SetActive(true); 
+            potal.SetActive(true);
         }
     }
 
@@ -52,9 +32,29 @@ public class BossMovement : MonoBehaviour
 
     private IEnumerator AttackRoutine()
     {
-        controlPoints[0] = startPos;
-        controlPoints[controlPoints.Length - 1] = target;
+        int missileCount = 8;
+        float spreadAngle = 60f;
+        float fireInterval = 2f; // 공격 간격
 
-        yield return new WaitForSeconds(8f);
+        while (true) // 보스가 살아있는 동안 계속
+        {
+            for (int i = 0; i < missileCount; i++)
+            {
+                float angleOffset = Mathf.Lerp(-spreadAngle / 2f, spreadAngle / 2f, (float)i / (missileCount - 1));
+                Quaternion rotation = firePoint.rotation * Quaternion.Euler(0, 0, angleOffset);
+
+                GameObject missileObj = Instantiate(bulletPrefab, firePoint.position, rotation);
+                BossMissile missile = missileObj.GetComponent<BossMissile>();
+                if (missile != null)
+                {
+                    missile.SetTarget(player);
+                }
+            }
+
+            yield return new WaitForSeconds(fireInterval); // 다음 공격까지 대기
+        }
     }
+
+
+
 }
