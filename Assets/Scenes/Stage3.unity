@@ -22680,22 +22680,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38f8f319c949e77488ded794038755c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackObjects:
-  - {fileID: 872664297}
-  - {fileID: 308828597}
-  - {fileID: 1665687385}
-  - {fileID: 716482702}
-  - {fileID: 1250798302}
-  - {fileID: 1595321268}
-  - {fileID: 399178648}
-  - {fileID: 2106395242}
-  - {fileID: 915623663}
-  warningTime: 2
-  hitDuration: 0.1
-  delayBetweenAttacks: 1.5
-  simultaneousCount: 5
   potal: {fileID: 129881581}
-  isLooping: 1
 --- !u!4 &1075902298
 Transform:
   m_ObjectHideFlags: 0
