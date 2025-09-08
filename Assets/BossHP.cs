@@ -7,6 +7,7 @@ public class BossHP : MonoBehaviour
     public float hp = 100f;
     public Slider hpSlider;
     public GameObject bossUI;
+    private SkillEmission skillEmission;
 
     private bool isDead = false;
 
@@ -22,6 +23,8 @@ public class BossHP : MonoBehaviour
 
         if (bossUI != null)
             bossUI.SetActive(false); // ���� �� ����
+
+        skillEmission = GetComponentInChildren<SkillEmission>();
     }
 
     private void Update()
@@ -60,6 +63,7 @@ public class BossHP : MonoBehaviour
             bossUI.SetActive(false);
 
         gameObject.SetActive(false);
+        skillEmission.StopSkill();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

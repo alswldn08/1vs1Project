@@ -9,6 +9,8 @@ TagManager:
   - BodyDamageEnemy
   - Boss
   - Bullet
+  - Obstacle
+  - BossBullet
   layers:
   - Default
   - TransparentFX

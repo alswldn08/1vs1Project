@@ -4986,11 +4986,11 @@ GameObject:
   - component: {fileID: 4616701889037132260}
   - component: {fileID: 4099838076574990509}
   - component: {fileID: 8110851055790110267}
-  - component: {fileID: -7116379908473521710}
-  - component: {fileID: 5839344165853039379}
+  - component: {fileID: -7464955125405830619}
+  - component: {fileID: 3881218657389494654}
   m_Layer: 0
-  m_Name: ProjectileStraight
-  m_TagString: Untagged
+  m_Name: ProjectileQuadraticHoming
+  m_TagString: BossBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5073,7 +5073,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.25
---- !u!114 &-7116379908473521710
+--- !u!114 &-7464955125405830619
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5082,11 +5082,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 6197509894989155861}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 980856d1e27925a4c969b47f9aa67867, type: 3}
+  m_Script: {fileID: 11500000, guid: 91119001243b3cc4ab44694e22aade14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hitEffect: {fileID: 1297803425142155509, guid: dde7a72a4de1bdc40a7138e6bd05585f, type: 3}
---- !u!114 &5839344165853039379
+  b1: 25
+  b2: 300
+--- !u!114 &3881218657389494654
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5098,8 +5100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59f8ad74af0cffb489aec3c939dcd9b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  potal: {fileID: 0}
-  moveSpeed: 10
+  moveSpeed: 8
 --- !u!1 &6973675256603641282
 GameObject:
   m_ObjectHideFlags: 0

@@ -23,7 +23,7 @@ public abstract class BossPatternBase : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Enemy"))
+        if (collision.CompareTag("Player") || collision.CompareTag("Obstacle"))
         {
             Instantiate(hitEffect, transform.position, Quaternion.identity);
             Destroy(gameObject);

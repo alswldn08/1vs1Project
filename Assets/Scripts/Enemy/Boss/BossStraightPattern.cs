@@ -8,7 +8,7 @@ public class BossStraightPattern : BossPatternBase
     {
         base.Setup(target, damage);
 
-        bossMovement.MoveTo((target.position - target.position).normalized);
+        bossMovement.MoveTo((target.position - transform.position).normalized);
     }
 
     public override void Process() { }
