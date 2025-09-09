@@ -155,8 +155,8 @@ MonoBehaviour:
   loadingSlider: {fileID: 2491429739731139821}
   loadingPG: {fileID: 2491429739731139820}
   randomValue: 0
-  weapon: {fileID: 592854354}
-  sliders: {fileID: 705757999}
+  weapon: {fileID: 705757999}
+  sliders: {fileID: 592854354}
 --- !u!4 &10784324
 Transform:
   m_ObjectHideFlags: 0
@@ -12218,7 +12218,7 @@ Transform:
   m_GameObject: {fileID: 1562962247}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.77, y: 2, z: 10}
+  m_LocalPosition: {x: 1.77, y: 2.42, z: 10}
   m_LocalScale: {x: 0.7, y: 0.69, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

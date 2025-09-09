@@ -7,8 +7,8 @@ public struct Data //전략패턴으로 사용될 데이터
     public int maxBullet;
     public int currentBullet; //현재 남은 총알 개수
     public float reloadTime; //재장전 시간
-    public float coolTime; 
-    public bool isReloading; 
+    public float coolTime;   // 발사 간격
+    public bool isReloading;
 }
 
 public abstract class Weapon : MonoBehaviour
@@ -21,6 +21,8 @@ public abstract class Weapon : MonoBehaviour
 
     protected Player player;
 
+    private float lastShotTime = 0f; // 마지막 발사 시간 기록
+
     public void SetPlayer(Player p)
     {
         player = p;
@@ -30,62 +32,50 @@ public abstract class Weapon : MonoBehaviour
 
     public virtual void Shoot(GameObject bulletPrefab, Transform firePoint)
     {
-        if(WController.weapon == glock)
+        if (WController.weapon == glock)
         {
             if (Input.GetMouseButtonDown(1))
             {
-
-                if (data.currentBullet > 0)
-                {
-                    player?.ChangeAnimation(3, 1f);
-                    GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
-                    float direction = transform.eulerAngles.y == 180 ? -1f : 1f;
-                    bullet.GetComponent<Bullet>().SetDirection(direction);
-                    data.currentBullet--;
-
-                    if (weaponUI != null)
-                    {
-                        weaponUI.CountBullet(this);
-                    }
-                    else
-                    {
-                        Debug.LogError("UIManager가 할당되지 않음");
-                    }
-                }
-                else
-                {
-                    Debug.Log("재장전 하세요");
-                }
+                TryShoot(bulletPrefab, firePoint);
             }
         }
 
-        if(WController.weapon == rifle)
+        if (WController.weapon == rifle)
         {
             if (Input.GetMouseButton(1))
             {
-
-                if (data.currentBullet > 0)
-                {
-                    player?.ChangeAnimation(3, 1f);
-                    GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
-                    float direction = transform.eulerAngles.y == 180 ? -1f : 1f;
-                    bullet.GetComponent<Bullet>().SetDirection(direction);
-                    data.currentBullet--;
-
-                    if (weaponUI != null)
-                    {
-                        weaponUI.CountBullet(this);
-                    }
-                    else
-                    {
-                        Debug.LogError("UIManager가 할당되지 않음");
-                    }
-                }
-                else
-                {
-                    Debug.Log("재장전 하세요");
-                }
+                TryShoot(bulletPrefab, firePoint);
             }
+        }
+    }
+
+    private void TryShoot(GameObject bulletPrefab, Transform firePoint)
+    {
+        // 쿨타임 체크
+        if (Time.time < lastShotTime + data.coolTime) return;
+
+        if (data.currentBullet > 0)
+        {
+            player?.ChangeAnimation(3, 1f);
+            GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
+            float direction = transform.eulerAngles.y == 180 ? -1f : 1f;
+            bullet.GetComponent<Bullet>().SetDirection(direction);
+            data.currentBullet--;
+
+            lastShotTime = Time.time; // 발사 시간 갱신
+
+            if (weaponUI != null)
+            {
+                weaponUI.CountBullet(this);
+            }
+            else
+            {
+                Debug.LogError("UIManager가 할당되지 않음");
+            }
+        }
+        else
+        {
+            Debug.Log("재장전 하세요");
         }
     }
 
@@ -127,3 +117,4 @@ public abstract class Weapon : MonoBehaviour
         }
     }
 }
+
