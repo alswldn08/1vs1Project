@@ -187,7 +187,11 @@ public class Player : MonoBehaviour
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("BodyDamageEnemy"))
+        if (collision.gameObject.CompareTag("BodyDamageEnemy")) // 단순 충돌시 데미지 주는 몬스터
+        {
+            playerHp -= 2f;
+        }
+        else if (collision.gameObject.CompareTag("BossBullet")) // 보스의 발사체 공격
         {
             playerHp -= 10f;
         }

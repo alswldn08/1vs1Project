@@ -2,32 +2,46 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-    public float moveSpeed = 2f;
-    public float jumpForce = 7f;
-    public float wallCheckWidthDistance = 0.3f;
-    public float wallCheckHeightDistance = 0.3f;
-    public float groundCheckDistance = 0.1f;
-    public float footOffset = 0.2f;
-    public LayerMask groundLayer;
+    public static EnemyMovement i { get; private set; }
 
-    public float leftBoundaryX;
-    public float rightBoundaryX;
+    [SerializeField]
+    private float moveSpeed = 2f;
+    [SerializeField]
+    private float jumpForce = 7f;
+    [SerializeField]
+    private float wallCheckWidthDistance = 0.3f;
+    [SerializeField]
+    private float wallCheckHeightDistance = 0.3f;
+    [SerializeField]
+    private float groundCheckDistance = 0.1f;
+    [SerializeField]
+    private float footOffset = 0.2f;
+    [SerializeField]
+    private LayerMask groundLayer;
+
+    [SerializeField]
+    private float leftBoundaryX;
+    [SerializeField]
+    private float rightBoundaryX;
+    [SerializeField]
+    private bool movingRight = true;
+    [SerializeField]
+    private float patrolDistance = 3f;
+    [SerializeField]
+    private float initialX;
+
+    public float MaxHp = 100f;
+    public float Hp = 100f;
 
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
-    private bool movingRight = true;
-    public float patrolDistance = 3f;
-    private float initialX;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        // 초기 위치 기준으로 좌우 경계 설정
-        initialX = transform.position.x;
-        leftBoundaryX = initialX - patrolDistance / 2f;
-        rightBoundaryX = initialX + patrolDistance / 2f;
+        SetStart();
     }
 
     private void FixedUpdate()
@@ -62,10 +76,30 @@ public class EnemyMovement : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
 
+        // 몬스터 죽음 확인
+        if(Hp <= 0) 
+        {
+            Deth();
+        }
+
         // 디버그용 레이 시각화
         Debug.DrawRay(wallCheckOrigin, Vector2.right * direction * 0.1f, Color.red);
         Debug.DrawRay(leftFoot, Vector2.down * groundCheckDistance, Color.green);
         Debug.DrawRay(rightFoot, Vector2.down * groundCheckDistance, Color.green);
+    }
+
+    public void SetStart()
+    {
+
+        // 초기 위치 기준으로 좌우 경계 설정
+        initialX = transform.position.x;
+        leftBoundaryX = initialX - patrolDistance / 2f;
+        rightBoundaryX = initialX + patrolDistance / 2f;
+    }
+
+    public void Deth()
+    {
+        Destroy(gameObject);
     }
 
     void OnDrawGizmos()
@@ -87,5 +121,13 @@ public class EnemyMovement : MonoBehaviour
         Gizmos.color = Color.blue;
         Gizmos.DrawLine(new Vector3(leftBoundaryX, transform.position.y - 1f, 0), new Vector3(leftBoundaryX, transform.position.y + 1f, 0));
         Gizmos.DrawLine(new Vector3(rightBoundaryX, transform.position.y - 1f, 0), new Vector3(rightBoundaryX, transform.position.y + 1f, 0));
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Bullet"))
+        {
+            Hp -= 25f;
+        }
     }
 }

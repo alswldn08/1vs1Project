@@ -5,15 +5,16 @@ using UnityEngine.UI;
 
 public class PlayerHpSlider : MonoBehaviour
 {
+    private Player player;
+
     public Slider hpSlider;
     public Image hpSliderColor; //슬라이더 색상 이미지
     private Color sliderColor;
 
-    private Player player;
-
     void Start()
     {
-        player = GetComponent<Player>();        
+        player = GetComponent<Player>();    
+        
         hpSlider.maxValue = 100f;
         hpSlider.value = 100f;
         hpSlider.interactable = false;
