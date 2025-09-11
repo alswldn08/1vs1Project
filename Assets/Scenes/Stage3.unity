@@ -23398,6 +23398,7 @@ MonoBehaviour:
   target: {fileID: 265414230}
   fireTiming: 0.8
   potal: {fileID: 129881581}
+  isDead: 0
 --- !u!1 &1097974571
 GameObject:
   m_ObjectHideFlags: 0
@@ -29559,6 +29560,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4961762708864096480, guid: 3a878221245fc9a43a4ef5b339b6473d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5391439324809194566, guid: 3a878221245fc9a43a4ef5b339b6473d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 482.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5759904027549385793, guid: 3a878221245fc9a43a4ef5b339b6473d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7605285655273035108, guid: 3a878221245fc9a43a4ef5b339b6473d, type: 3}
       propertyPath: countGlock
       value: 
@@ -29570,6 +29583,18 @@ PrefabInstance:
     - target: {fileID: 7744218135505842865, guid: 3a878221245fc9a43a4ef5b339b6473d, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9038764384018552677, guid: 3a878221245fc9a43a4ef5b339b6473d, type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: f0ebe0a62c871384d8a8bb4b693140b6, type: 3}
+    - target: {fileID: 9038764384018552677, guid: 3a878221245fc9a43a4ef5b339b6473d, type: 3}
+      propertyPath: m_FontData.m_MaxSize
+      value: 65
+      objectReference: {fileID: 0}
+    - target: {fileID: 9038764384018552677, guid: 3a878221245fc9a43a4ef5b339b6473d, type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 65
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
