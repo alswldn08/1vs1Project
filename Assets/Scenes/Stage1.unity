@@ -3975,11 +3975,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8679459964432709107, guid: 1693bd219ee98474f9578e83a59ec7d9, type: 3}
       propertyPath: leftBoundaryX
-      value: 20.4
+      value: 18.7
       objectReference: {fileID: 0}
     - target: {fileID: 8679459964432709107, guid: 1693bd219ee98474f9578e83a59ec7d9, type: 3}
       propertyPath: rightBoundaryX
-      value: 27
+      value: 26.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8679459964432709107, guid: 1693bd219ee98474f9578e83a59ec7d9, type: 3}
+      propertyPath: autoCalculateBoundaries
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11846,6 +11850,10 @@ PrefabInstance:
       propertyPath: rightBoundaryX
       value: 13
       objectReference: {fileID: 0}
+    - target: {fileID: 8679459964432709107, guid: 1693bd219ee98474f9578e83a59ec7d9, type: 3}
+      propertyPath: autoCalculateBoundaries
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -15836,6 +15844,10 @@ PrefabInstance:
     - target: {fileID: 7764321669483386721, guid: 1693bd219ee98474f9578e83a59ec7d9, type: 3}
       propertyPath: m_Name
       value: Mushroom
+      objectReference: {fileID: 0}
+    - target: {fileID: 8679459964432709107, guid: 1693bd219ee98474f9578e83a59ec7d9, type: 3}
+      propertyPath: autoCalculateBoundaries
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

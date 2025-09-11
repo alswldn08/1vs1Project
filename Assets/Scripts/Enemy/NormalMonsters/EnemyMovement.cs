@@ -29,6 +29,8 @@ public class EnemyMovement : MonoBehaviour
     private float patrolDistance = 3f;
     [SerializeField]
     private float initialX;
+    [SerializeField] 
+    private bool autoCalculateBoundaries = true;
 
     public float MaxHp = 100f;
     public float Hp = 100f;
@@ -90,11 +92,13 @@ public class EnemyMovement : MonoBehaviour
 
     public void SetStart()
     {
-
-        // 초기 위치 기준으로 좌우 경계 설정
         initialX = transform.position.x;
-        leftBoundaryX = initialX - patrolDistance / 2f;
-        rightBoundaryX = initialX + patrolDistance / 2f;
+
+        if (autoCalculateBoundaries)
+        {
+            leftBoundaryX = initialX - patrolDistance / 2f;
+            rightBoundaryX = initialX + patrolDistance / 2f;
+        }
     }
 
     public void Deth()
