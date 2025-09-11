@@ -52,7 +52,7 @@ public class BossHP : MonoBehaviour
     {
         Debug.Log("Boss defeated!");
 
-        StartCoroutine(DisableUIAndBossAfterDelay(1f));
+        StartCoroutine(DisableUIAndBossAfterDelay(4f));
     }
 
     private IEnumerator DisableUIAndBossAfterDelay(float delay)

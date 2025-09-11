@@ -12,9 +12,8 @@ public class SkillEmission : MonoBehaviour
     [SerializeField] private Transform skillSpawnPoint;
     [SerializeField] private Transform target;
 
-    [SerializeField]
-    [Range(0f, 1f)]
-    private float fireTiming = 0.8f; // 애니메이션 진행 비율(끝나기 직전 발사)
+    [SerializeField, Range(0f, 1f)]
+    private float fireTiming = 0.8f;
 
     private int currentBulletIndex = 0;
     private float attackRate = 0.05f;
@@ -24,16 +23,26 @@ public class SkillEmission : MonoBehaviour
     private BossHP bossHP;
     private Animator bossAnim;
 
+    public bool isDead = false; // 죽음 상태 체크
+
     void Start()
     {
         bossHP = GetComponentInParent<BossHP>();
         bossAnim = GetComponentInParent<Animator>();
-        bossAnim.SetInteger("BossState", 0); // 기본 idle 상태
+        bossAnim.SetInteger("BossState", 0); // 초기 Idle
+    }
+
+    public void Update()
+    {
+        if (isDead)
+        {
+            StopSkill();
+        }
     }
 
     public void StartSkill()
     {
-        if (attackRoutine == null)
+        if (attackRoutine == null && !isDead)
         {
             attackRoutine = StartCoroutine(SkillRoutine());
             bossHP.bossUI.SetActive(true);
@@ -42,26 +51,34 @@ public class SkillEmission : MonoBehaviour
 
     public void StopSkill()
     {
+        if (isDead) return; // 이미 죽었으면 처리하지 않음
+
+        // 1. 코루틴 종료
         if (attackRoutine != null)
         {
             StopCoroutine(attackRoutine);
-            potal.gameObject.SetActive(true);
             attackRoutine = null;
-            bossAnim.SetInteger("BossState", 0); // 강제 idle 복귀
         }
+
+        bossAnim.SetTrigger("Death");          // 오직 Death 트리거만 켜기
+
+        // 3. 포탈 활성화
+        potal.SetActive(true);
     }
+
+
 
     private IEnumerator SkillRoutine()
     {
-        while (true)
+        while (!isDead)
         {
             // 1. 애니메이션 번호 결정
             int animNumber = (projectileType == ProjectileType.Homing || projectileType == ProjectileType.CubicHoming) ? 1 : 2;
             bossAnim.SetInteger("BossState", animNumber);
 
-            // 2. 애니메이션 길이 가져오기
+            // 2. 현재 애니메이션 길이 가져오기
             AnimatorClipInfo[] clipInfos = bossAnim.GetCurrentAnimatorClipInfo(0);
-            float animLength = 1f; // 기본값
+            float animLength = 1f;
             if (clipInfos.Length > 0)
             {
                 animLength = clipInfos[0].clip.length;
@@ -76,6 +93,11 @@ public class SkillEmission : MonoBehaviour
             // 5. 총알 발사
             for (currentBulletIndex = 0; currentBulletIndex < bulletCount; currentBulletIndex++)
             {
+                if (isDead) 
+                {
+                    break; 
+                }
+
                 GameObject clone = Instantiate(
                     bullets[(int)projectileType],
                     skillSpawnPoint.position,
@@ -90,8 +112,9 @@ public class SkillEmission : MonoBehaviour
             float remainTime = animLength * (1f - fireTiming);
             yield return new WaitForSeconds(remainTime);
 
-            // 7. Idle로 복귀
-            bossAnim.SetInteger("BossState", 0);
+            // 7. Idle 복귀 (죽음 상태면 실행하지 않음)
+            if (!isDead)
+                bossAnim.SetInteger("BossState", 0);
 
             // 8. 쿨타임 대기
             yield return new WaitForSeconds(cooldownTime);
