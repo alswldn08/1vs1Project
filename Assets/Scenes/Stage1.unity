@@ -14965,7 +14965,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 510739597537161078, guid: 63c8003d447f96d49a570dcfa7f3f95a, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3589042073541586990, guid: 63c8003d447f96d49a570dcfa7f3f95a, type: 3}
       propertyPath: weapon
