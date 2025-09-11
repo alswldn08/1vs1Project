@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
-  m_Name: Global Volume Profile
+  m_Name: Main Camera Profile
   m_EditorClassIdentifier: 
   components:
-  - {fileID: 3033403392297615407}
-  - {fileID: 6448830455478179373}
---- !u!114 &3033403392297615407
+  - {fileID: 3403455352149643782}
+  - {fileID: 7445859441725831848}
+--- !u!114 &3403455352149643782
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -36,16 +36,16 @@ MonoBehaviour:
     m_Value: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 0.4
+    m_Value: 0.1
   scatter:
     m_OverrideState: 1
-    m_Value: 0.4
+    m_Value: 0.6
   clamp:
     m_OverrideState: 1
     m_Value: 65472
   tint:
     m_OverrideState: 1
-    m_Value: {r: 1, g: 0.68354356, b: 0.33725488, a: 1}
+    m_Value: {r: 0.9243889, g: 0, b: 1, a: 1}
   highQualityFiltering:
     m_OverrideState: 1
     m_Value: 0
@@ -62,7 +62,7 @@ MonoBehaviour:
   dirtIntensity:
     m_OverrideState: 1
     m_Value: 0
---- !u!114 &6448830455478179373
+--- !u!114 &7445859441725831848
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -77,13 +77,13 @@ MonoBehaviour:
   active: 1
   postExposure:
     m_OverrideState: 1
-    m_Value: -0.1
+    m_Value: -0.3
   contrast:
     m_OverrideState: 1
-    m_Value: 10
+    m_Value: 20
   colorFilter:
     m_OverrideState: 1
-    m_Value: {r: 0.89829767, g: 0.8980392, b: 1, a: 1}
+    m_Value: {r: 0.87358487, g: 1, b: 0.96958214, a: 1}
   hueShift:
     m_OverrideState: 1
     m_Value: 0
