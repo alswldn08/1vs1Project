@@ -57,6 +57,9 @@ public class SkillEmission : MonoBehaviour
         if (attackRoutine != null)
         {
             StopCoroutine(attackRoutine);
+
+            SoundManager.i.bgmSound.Stop();
+            SoundManager.i.PlayEffect(8);
             attackRoutine = null;
         }
 

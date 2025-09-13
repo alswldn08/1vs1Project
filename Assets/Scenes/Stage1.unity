@@ -3975,7 +3975,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7764321669483386721, guid: 1693bd219ee98474f9578e83a59ec7d9, type: 3}
       propertyPath: m_Name
-      value: Mushroom (1)
+      value: Mushroom
       objectReference: {fileID: 0}
     - target: {fileID: 8679459964432709107, guid: 1693bd219ee98474f9578e83a59ec7d9, type: 3}
       propertyPath: leftBoundaryX
@@ -11844,7 +11844,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7764321669483386721, guid: 1693bd219ee98474f9578e83a59ec7d9, type: 3}
       propertyPath: m_Name
-      value: Mushroom (2)
+      value: Mushroom
       objectReference: {fileID: 0}
     - target: {fileID: 8679459964432709107, guid: 1693bd219ee98474f9578e83a59ec7d9, type: 3}
       propertyPath: leftBoundaryX

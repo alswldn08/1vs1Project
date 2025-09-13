@@ -2,25 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct Data // 전략패턴으로 사용될 데이터
+public struct Data //전략패턴으로 사용될 데이터
 {
     public int maxBullet;
-    public int currentBullet; // 현재 남은 총알 개수
-    public float reloadTime;  // 재장전 시간
-    public float coolTime;    // 발사 간격
+    public int currentBullet; //현재 남은 총알 개수
+    public float reloadTime; //재장전 시간
+    public float coolTime;   // 발사 간격
     public bool isReloading;
 }
 
 public abstract class Weapon : MonoBehaviour
 {
     public Data data;
-
     private WeaponUI weaponUI;
     private WeaponController WController;
     private Glock glock;
     private Rifle rifle;
 
     protected Player player;
+
     private float lastShotTime = 0f; // 마지막 발사 시간 기록
 
     public void SetPlayer(Player p)
@@ -57,35 +57,22 @@ public abstract class Weapon : MonoBehaviour
         if (data.currentBullet > 0)
         {
             player?.ChangeAnimation(3, 1f);
-
+            SoundManager.i.PlayPlayerEffect(0);
             GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
             float direction = transform.eulerAngles.y == 180 ? -1f : 1f;
             bullet.GetComponent<Bullet>().SetDirection(direction);
-
             data.currentBullet--;
+
             lastShotTime = Time.time; // 발사 시간 갱신
 
             if (weaponUI != null)
             {
-                Debug.Log($"[{gameObject.name}] 총알 발사, 남은 탄환: {data.currentBullet}");
                 weaponUI.CountBullet(this);
-            }
-            else
-            {
-                Debug.LogError("weaponUI가 null 상태임!");
             }
         }
         else
         {
-            Debug.Log($"[{gameObject.name}] 탄환 소진됨, WeaponUI 호출 시도");
-            if (weaponUI != null)
-            {
-                weaponUI.WeaponStateText(this, "탄환 소진");
-            }
-            else
-            {
-                Debug.LogError("weaponUI가 null 상태임!");
-            }
+            Debug.Log("재장전 하세요");
         }
     }
 
@@ -94,23 +81,18 @@ public abstract class Weapon : MonoBehaviour
         if (data.currentBullet == data.maxBullet || data.isReloading) yield break;
 
         data.isReloading = true;
-        Debug.Log($"[{gameObject.name}] 재장전 시작");
-        weaponUI?.WeaponStateText(this, "재장전 중...");
+        Debug.Log($"{gameObject.name}: 재장전 중...");
 
         yield return new WaitForSeconds(data.reloadTime);
 
         data.currentBullet = data.maxBullet;
-        Debug.Log($"[{gameObject.name}] 재장전 완료, 탄환 {data.currentBullet}/{data.maxBullet}");
-        weaponUI?.WeaponStateText(this, "재장전 완료");
+        Debug.Log($"{gameObject.name}: 재장전 완료!");
+
         data.isReloading = false;
 
         if (weaponUI != null)
         {
             weaponUI.CountBullet(this);
-        }
-        else
-        {
-            Debug.LogError("weaponUI가 null 상태임!");
         }
     }
 
@@ -121,8 +103,6 @@ public abstract class Weapon : MonoBehaviour
         WController = FindObjectOfType<WeaponController>();
         glock = FindObjectOfType<Glock>();
         rifle = FindObjectOfType<Rifle>();
-
-        if (weaponUI == null)
-            Debug.LogError("WeaponUI를 찾지 못했습니다. 씬에 WeaponUI 오브젝트가 있는지 확인하세요.");
     }
 }
+

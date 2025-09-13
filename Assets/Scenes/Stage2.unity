@@ -4760,7 +4760,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 18551462758886372, guid: e4ea6dd191ff9374ba3e1d7356be455c, type: 3}
       propertyPath: m_Name
-      value: Wolf (1)
+      value: Wolf
       objectReference: {fileID: 0}
     - target: {fileID: 18551462758886372, guid: e4ea6dd191ff9374ba3e1d7356be455c, type: 3}
       propertyPath: m_TagString
@@ -13571,7 +13571,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 18551462758886372, guid: e4ea6dd191ff9374ba3e1d7356be455c, type: 3}
       propertyPath: m_Name
-      value: Wolf (2)
+      value: Wolf
       objectReference: {fileID: 0}
     - target: {fileID: 18551462758886372, guid: e4ea6dd191ff9374ba3e1d7356be455c, type: 3}
       propertyPath: m_TagString

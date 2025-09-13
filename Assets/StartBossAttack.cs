@@ -14,6 +14,7 @@ public class StartBossAttack : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             skillEmission.StartSkill();
+            SoundManager.i.PlayBBM(5);
         }
     }
 }

@@ -74,6 +74,7 @@ public class BossHP : MonoBehaviour
         {
             hp -= 10f;
             Destroy(collision.gameObject);
+            SoundManager.i.PlayEffect(7);
             Debug.Log("Boss hit! HP = " + hp);
         }
     }

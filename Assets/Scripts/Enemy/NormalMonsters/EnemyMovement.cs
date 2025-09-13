@@ -103,7 +103,19 @@ public class EnemyMovement : MonoBehaviour
 
     public void Deth()
     {
-        Destroy(gameObject);
+        if (gameObject.name == "Mushroom")
+        {
+            SoundManager.i.PlayEffect(2);
+        }
+        else if (gameObject.name == "Wolf")
+        {
+            SoundManager.i.PlayEffect(4);
+        }
+        else if (gameObject.name == "CrabEnemy")
+        {
+            SoundManager.i.PlayEffect(6);
+        }
+            Destroy(gameObject);
     }
 
     void OnDrawGizmos()
@@ -131,6 +143,18 @@ public class EnemyMovement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Bullet"))
         {
+            if (gameObject.name == "Mushroom")
+            {
+                SoundManager.i.PlayEffect(1);
+            }
+            else if (gameObject.name == "Wolf")
+            {
+                SoundManager.i.PlayEffect(3);
+            }
+            else if (gameObject.name == "CrabEnemy")
+            {
+                SoundManager.i.PlayEffect(5);
+            }
             Hp -= 25f;
         }
     }

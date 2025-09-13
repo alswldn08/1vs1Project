@@ -801,7 +801,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8170819258129692787, guid: 8a4e8e80da193584382728d0290d5f88, type: 3}
       propertyPath: m_Name
-      value: CrabEnemy (1)
+      value: CrabEnemy
       objectReference: {fileID: 0}
     - target: {fileID: 8170819258129692787, guid: 8a4e8e80da193584382728d0290d5f88, type: 3}
       propertyPath: m_TagString
@@ -1364,6 +1364,17 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!114 &401217345 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4510908894290136318, guid: 3a878221245fc9a43a4ef5b339b6473d, type: 3}
+  m_PrefabInstance: {fileID: 4442539535827075721}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &425249393
 GameObject:
   m_ObjectHideFlags: 0
@@ -23129,7 +23140,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8170819258129692787, guid: 8a4e8e80da193584382728d0290d5f88, type: 3}
       propertyPath: m_Name
-      value: CrabEnemy (3)
+      value: CrabEnemy
       objectReference: {fileID: 0}
     - target: {fileID: 8170819258129692787, guid: 8a4e8e80da193584382728d0290d5f88, type: 3}
       propertyPath: m_TagString
@@ -29410,7 +29421,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8170819258129692787, guid: 8a4e8e80da193584382728d0290d5f88, type: 3}
       propertyPath: m_Name
-      value: CrabEnemy (2)
+      value: CrabEnemy
       objectReference: {fileID: 0}
     - target: {fileID: 8170819258129692787, guid: 8a4e8e80da193584382728d0290d5f88, type: 3}
       propertyPath: m_TagString
@@ -29585,6 +29596,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7605285655273035108, guid: 3a878221245fc9a43a4ef5b339b6473d, type: 3}
+      propertyPath: stateText
+      value: 
+      objectReference: {fileID: 401217345}
+    - target: {fileID: 7605285655273035108, guid: 3a878221245fc9a43a4ef5b339b6473d, type: 3}
       propertyPath: countGlock
       value: 
       objectReference: {fileID: 1932363364}
@@ -29607,6 +29622,10 @@ PrefabInstance:
     - target: {fileID: 9038764384018552677, guid: 3a878221245fc9a43a4ef5b339b6473d, type: 3}
       propertyPath: m_FontData.m_FontSize
       value: 65
+      objectReference: {fileID: 0}
+    - target: {fileID: 9094723121640222209, guid: 3a878221245fc9a43a4ef5b339b6473d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -63,6 +63,7 @@ public class Player : MonoBehaviour
     {
         if(playerHp <= 0f)
         {
+            SoundManager.i.PlayPlayerEffect(2);
             GameManager.i.GameOver();
         }
         // 애니메이션 락 타이머 갱신
@@ -89,7 +90,6 @@ public class Player : MonoBehaviour
             isJumping = false;
             isAnimLocked = false;
             animLockTimer = 0f;
-            animator.Play("Run", 0);
             animator.SetInteger("states", 1);
             currentAnimState = 1;
         }
@@ -189,11 +189,18 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("BodyDamageEnemy")) // 단순 충돌시 데미지 주는 몬스터
         {
-            playerHp -= 2f;
-        }
-        else if (collision.gameObject.CompareTag("BossBullet")) // 보스의 발사체 공격
-        {
+            SoundManager.i.PlayPlayerEffect(1);
             playerHp -= 10f;
+        }
+
+    }
+
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("BossBullet")) // 보스의 발사체 공격
+        {
+            SoundManager.i.PlayPlayerEffect(1);
+            playerHp -= 2f;
         }
     }
 
