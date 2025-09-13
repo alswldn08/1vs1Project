@@ -803,6 +803,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CrabEnemy (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8170819258129692787, guid: 8a4e8e80da193584382728d0290d5f88, type: 3}
+      propertyPath: m_TagString
+      value: BodyDamageEnemy
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -23127,6 +23131,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CrabEnemy (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 8170819258129692787, guid: 8a4e8e80da193584382728d0290d5f88, type: 3}
+      propertyPath: m_TagString
+      value: BodyDamageEnemy
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -23542,9 +23550,9 @@ MonoBehaviour:
   m_LookaheadTime: 0
   m_LookaheadSmoothing: 0
   m_LookaheadIgnoreY: 0
-  m_XDamping: 0
+  m_XDamping: 1
   m_YDamping: 20
-  m_ZDamping: 0
+  m_ZDamping: 1
   m_TargetMovementOnly: 1
   m_ScreenX: 0.5
   m_ScreenY: 0.5
@@ -29231,7 +29239,7 @@ GameObject:
   - component: {fileID: 1970848819}
   m_Layer: 0
   m_Name: StartBossAttack
-  m_TagString: Untagged
+  m_TagString: BulletDestroyer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29404,6 +29412,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CrabEnemy (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 8170819258129692787, guid: 8a4e8e80da193584382728d0290d5f88, type: 3}
+      propertyPath: m_TagString
+      value: BodyDamageEnemy
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -29562,7 +29574,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4961762708864096480, guid: 3a878221245fc9a43a4ef5b339b6473d, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5391439324809194566, guid: 3a878221245fc9a43a4ef5b339b6473d, type: 3}
       propertyPath: m_AnchoredPosition.y

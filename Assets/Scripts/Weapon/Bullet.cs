@@ -6,6 +6,7 @@ public class Bullet : MonoBehaviour
 {
     public float bulletSpeed = 10f;
     private float direction;
+    public GameObject hitEffect;
 
     public void SetDirection(float dir)
     {
@@ -19,11 +20,25 @@ public class Bullet : MonoBehaviour
         Destroy(gameObject, 3f);
     }
 
+    public void HitBullet()
+    {
+        Destroy(gameObject);
+        Instantiate(hitEffect, transform.position, Quaternion.identity);
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (!collision.gameObject.CompareTag("Player"))
         {
-            Destroy(gameObject);
+            HitBullet();
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("BulletDestroyer"))
+        {
+            HitBullet();
         }
     }
 }
