@@ -45,10 +45,10 @@ public class SoundManager : MonoBehaviour
             effectSlider.value = 1;
         }
 
-        PlayBBM(0);
+        PlayBGM(0);
     }
 
-    public void PlayBBM(int Index)
+    public void PlayBGM(int Index)
     {
         if (Index < 0 || Index >= bgmList.Count) return;
 

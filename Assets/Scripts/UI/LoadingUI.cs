@@ -100,15 +100,15 @@ public class LoadingUI : MonoBehaviour
                 {
                     case "Title":
                         MoveSceneManager.i.MoveScene1();
-                        SoundManager.i.PlayBBM(2);
+                        SoundManager.i.PlayBGM(2);
                         break;
                     case "Stage1":
                         MoveSceneManager.i.MoveScene2();
-                        SoundManager.i.PlayBBM(3);
+                        SoundManager.i.PlayBGM(3);
                         break;
                     case "Stage2":
                         MoveSceneManager.i.MoveScene3();
-                        SoundManager.i.PlayBBM(4);
+                        SoundManager.i.PlayBGM(4);
                         break;
                     case "Stage3":
                         MoveSceneManager.i.MoveScene1();
