@@ -209,13 +209,6 @@ public class Player : MonoBehaviour
     {
         playerHp -= damage;
 
-        // 데미지 텍스트 생성
-        if (DamageTextController.Instance != null)
-        {
-            Vector3 hitPos = transform.position + new Vector3(0, 1f, 0); // 플레이어 위쪽
-            DamageTextController.Instance.CreateDamageText(hitPos, Mathf.RoundToInt(damage));
-        }
-
         Color damaged = new Color(255f / 255f, 70f / 255f, 70f / 255f);
         StartCoroutine(DamageEffect(damaged));
         StartCoroutine(playerHpSlider.Damaged());
@@ -225,13 +218,6 @@ public class Player : MonoBehaviour
     private void HandleHeal(float heal)
     {
         playerHp += heal;
-
-        // 회복 텍스트 생성
-        if (DamageTextController.Instance != null)
-        {
-            Vector3 hitPos = transform.position + new Vector3(0, 1f, 0);
-            DamageTextController.Instance.CreateDamageText(hitPos, Mathf.RoundToInt(heal));
-        }
     }
 
     public void OnCollisionEnter2D(Collision2D collision)
@@ -246,7 +232,7 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("BossBullet"))
         {
-            HandleDamage(10f);
+            HandleDamage(5f);
         }
     }
 

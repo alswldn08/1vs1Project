@@ -58,13 +58,13 @@ public class SkillEmission : MonoBehaviour
     {
         if (isDead)
         {
+            bossAnim.SetInteger("BossState", 4);
             // 1. 생성된 모든 총알 삭제
             foreach (var bullet in spawnedBullets)
             {
                 if (bullet != null)
                     Destroy(bullet);
             }
-            
         }
 
         // 2. 코루틴 종료
@@ -77,9 +77,6 @@ public class SkillEmission : MonoBehaviour
             SoundManager.i.PlayEffect(8);
             attackRoutine = null;
         }
-
-        // 3. 죽음 애니메이션 실행
-        bossAnim.SetTrigger("Death"); // 오직 Death 트리거만 켜기
 
         // 4. 포탈 활성화
         potal.SetActive(true);
