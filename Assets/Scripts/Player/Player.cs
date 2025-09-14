@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
 
 public class Player : MonoBehaviour
 {
@@ -9,6 +8,8 @@ public class Player : MonoBehaviour
     #region 레퍼런스
     private Rigidbody2D rb;
     private Weapon weapon;
+    private SpriteRenderer playerSprite;
+    private PlayerHpSlider playerHpSlider;
     #endregion
 
     [Header("Move")]
@@ -43,12 +44,14 @@ public class Player : MonoBehaviour
 
     private bool isJumping = false;
 
-
-
     private void Awake()
     {
         if (i == null)
+        {
             i = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else Destroy(gameObject);
     }
 
     private void Start()
@@ -56,17 +59,20 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         weapon = GetComponent<Weapon>();
         animator = GetComponent<Animator>();
+        playerSprite = GetComponent<SpriteRenderer>();
+        playerHpSlider = GetComponent<PlayerHpSlider>();
         rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
     }
 
     private void Update()
     {
-        if(playerHp <= 0f)
+        if (playerHp <= 0f)
         {
             SoundManager.i.PlayPlayerEffect(2);
+            Destroy(gameObject);
             GameManager.i.GameOver();
         }
-        // 애니메이션 락 타이머 갱신
+
         if (isAnimLocked)
         {
             animLockTimer -= Time.deltaTime;
@@ -76,7 +82,6 @@ public class Player : MonoBehaviour
             }
         }
 
-        // 바닥 체크 (좌우 발끝 기준으로 Ray 발사)
         bool wasGround = isGround;
         Vector2 leftRayOrigin = new Vector2(pos.position.x - footOffset, pos.position.y);
         Vector2 rightRayOrigin = new Vector2(pos.position.x + footOffset, pos.position.y);
@@ -84,7 +89,6 @@ public class Player : MonoBehaviour
         RaycastHit2D rightHit = Physics2D.Raycast(rightRayOrigin, Vector2.down, rayLength, isLayer);
         isGround = leftHit.collider != null || rightHit.collider != null;
 
-        // 착지 시 점프 상태 초기화 및 애니메이션 전환
         if (isJumping && isGround && !wasGround)
         {
             isJumping = false;
@@ -94,7 +98,6 @@ public class Player : MonoBehaviour
             currentAnimState = 1;
         }
 
-        // 대시 입력
         if (Input.GetKeyDown(KeyCode.LeftShift) && !isDash && dashCooldownTimer <= 0f)
         {
             if (playerEnergy >= 20f)
@@ -106,18 +109,16 @@ public class Player : MonoBehaviour
 
         dashCooldownTimer -= Time.deltaTime;
 
-        // 점프 입력
         if (isGround && Input.GetKeyDown(KeyCode.Space))
         {
             rb.velocity = new Vector2(rb.velocity.x, power);
             isJumping = true;
-            ChangeAnimation(2, 0f, true); // 점프 애니메이션
+            ChangeAnimation(2, 0f, true); // 점프
             return;
         }
 
         if (isDash) return;
 
-        // 공격 애니메이션 도중 이동 제한
         if (isAnimLocked && currentAnimState == 3)
         {
             rb.velocity = new Vector2(0, rb.velocity.y);
@@ -125,7 +126,6 @@ public class Player : MonoBehaviour
         else
         {
             float move = 0f;
-
             speed = (weapon != null && weapon.data.isReloading) ? 2f : 5f;
 
             if (Input.GetKey(KeyCode.A))
@@ -133,21 +133,21 @@ public class Player : MonoBehaviour
                 direction = false;
                 move = -1f;
                 transform.rotation = Quaternion.Euler(0, 180, 0);
-                ChangeAnimation(1); // 걷기
+                ChangeAnimation(1);
             }
             else if (Input.GetKey(KeyCode.D))
             {
                 direction = true;
                 move = 1f;
                 transform.rotation = Quaternion.Euler(0, 0, 0);
-                ChangeAnimation(1); // 걷기
+                ChangeAnimation(1);
             }
 
             rb.velocity = new Vector2(speed * move, rb.velocity.y);
 
             if (move == 0f && rb.velocity.y == 0 && isGround && !isJumping)
             {
-                ChangeAnimation(0); // 정지
+                ChangeAnimation(0);
             }
         }
 
@@ -157,7 +157,6 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // 대시 중 물리 이동
         if (isDash)
         {
             float dashDir = direction ? 1f : -1f;
@@ -171,13 +170,34 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void MoveOff()
+    {
+        if (rb == null) return;
+        rb.velocity = Vector2.zero;
+        rb.constraints = RigidbodyConstraints2D.FreezeAll;
+    }
+
+    public void MoveOn()
+    {
+        if (rb == null) return;
+        rb.constraints = RigidbodyConstraints2D.None;
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+    }
+
     private void StartDash()
     {
         isDash = true;
         dashTimer = dashTime;
         dashCooldownTimer = dashCooldown;
         playerEnergy -= 20f;
-        ChangeAnimation(4, dashTime, true); // 대시 애니메이션
+        ChangeAnimation(4, dashTime, true); // 대시
+    }
+
+    private IEnumerator DamageEffect(Color dam)
+    {
+        playerSprite.color = dam;
+        yield return new WaitForSeconds(0.1f);
+        playerSprite.color = Color.white;
     }
 
     public void SetWeapon(Weapon newWeapon)
@@ -185,22 +205,48 @@ public class Player : MonoBehaviour
         weapon = newWeapon;
     }
 
-    public void OnCollisionEnter2D(Collision2D collision)
+    private void HandleDamage(float damage)
     {
-        if (collision.gameObject.CompareTag("BodyDamageEnemy")) // 단순 충돌시 데미지 주는 몬스터
+        playerHp -= damage;
+
+        // 데미지 텍스트 생성
+        if (DamageTextController.Instance != null)
         {
-            SoundManager.i.PlayPlayerEffect(1);
-            playerHp -= 10f;
+            Vector3 hitPos = transform.position + new Vector3(0, 1f, 0); // 플레이어 위쪽
+            DamageTextController.Instance.CreateDamageText(hitPos, Mathf.RoundToInt(damage));
         }
 
+        Color damaged = new Color(255f / 255f, 70f / 255f, 70f / 255f);
+        StartCoroutine(DamageEffect(damaged));
+        StartCoroutine(playerHpSlider.Damaged());
+        SoundManager.i.PlayPlayerEffect(1);
+    }
+
+    private void HandleHeal(float heal)
+    {
+        playerHp += heal;
+
+        // 회복 텍스트 생성
+        if (DamageTextController.Instance != null)
+        {
+            Vector3 hitPos = transform.position + new Vector3(0, 1f, 0);
+            DamageTextController.Instance.CreateDamageText(hitPos, Mathf.RoundToInt(heal));
+        }
+    }
+
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("BodyDamageEnemy"))
+        {
+            HandleDamage(10f);
+        }
     }
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("BossBullet")) // 보스의 발사체 공격
+        if (collision.gameObject.CompareTag("BossBullet"))
         {
-            SoundManager.i.PlayPlayerEffect(1);
-            playerHp -= 2f;
+            HandleDamage(10f);
         }
     }
 

@@ -1,7 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class SoundManager : MonoBehaviour
 {
@@ -24,6 +24,7 @@ public class SoundManager : MonoBehaviour
         {
             i = this;
             DontDestroyOnLoad(gameObject);
+            SceneManager.sceneLoaded += OnSceneLoaded; // 씬 로드 이벤트 등록
         }
         else
         {
@@ -31,55 +32,74 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // 씬이 로드될 때마다 슬라이더 자동 연결
+        AssignSliders();
+    }
+
+    private void AssignSliders()
+    {
+        // 비활성화 포함 모든 Slider 오브젝트 검색
+        Slider[] sliders = Resources.FindObjectsOfTypeAll<Slider>();
+
+        foreach (var s in sliders)
+        {
+            // 현재 씬에 존재하는 오브젝트인지 확인
+            if (!s.gameObject.scene.IsValid()) continue;
+
+            if (s.CompareTag("BGMSlider"))
+            {
+                bgmSlider = s;
+                bgmSlider.onValueChanged.RemoveAllListeners();
+                bgmSlider.onValueChanged.AddListener(SetBGMVolum);
+                bgmSlider.value = bgmSound != null ? bgmSound.volume : 1f;
+            }
+            else if (s.CompareTag("EffectSlider"))
+            {
+                effectSlider = s;
+                effectSlider.onValueChanged.RemoveAllListeners();
+                effectSlider.onValueChanged.AddListener(SetEffectVolum);
+                effectSlider.value = effectSound != null ? effectSound.volume : 1f;
+            }
+        }
+    }
+
     private void Start()
     {
-        if (bgmSlider != null)
-        {
-            bgmSlider.onValueChanged.AddListener(SetBGMVolum);
-            bgmSlider.value = 1;
-        }
-
-        if (effectSlider != null)
-        {
-            effectSlider.onValueChanged.AddListener(SetEffectVolum);
-            effectSlider.value = 1;
-        }
-
         PlayBGM(0);
     }
 
-    public void PlayBGM(int Index)
+    public void PlayBGM(int index)
     {
-        if (Index < 0 || Index >= bgmList.Count) return;
+        if (index < 0 || index >= bgmList.Count) return;
 
-        bgmSound.clip = bgmList[Index];
+        bgmSound.clip = bgmList[index];
         bgmSound.Play();
     }
 
-    public void PlayEffect(int Index)
+    public void PlayEffect(int index)
     {
-        if (Index < 0 || Index >= effectList.Count) return;
+        if (index < 0 || index >= effectList.Count) return;
 
-        // PlayOneShot 사용 → 동시에 여러 사운드 가능
-        effectSound.PlayOneShot(effectList[Index]);
+        effectSound.PlayOneShot(effectList[index]);
     }
 
-    public void PlayPlayerEffect(int Index)
+    public void PlayPlayerEffect(int index)
     {
-        if (Index < 0 || Index >= PlayerEffectList.Count) return;
+        if (index < 0 || index >= PlayerEffectList.Count) return;
 
-        // PlayOneShot 사용 → 동시에 여러 사운드 가능
-        playerEffectSound.PlayOneShot(PlayerEffectList[Index]);
+        playerEffectSound.PlayOneShot(PlayerEffectList[index]);
     }
 
     public void SetBGMVolum(float value)
     {
-        bgmSound.volume = value;
+        if (bgmSound != null) bgmSound.volume = value;
     }
 
     public void SetEffectVolum(float value)
     {
-        effectSound.volume = value;
-        playerEffectSound.volume = value;
+        if (effectSound != null) effectSound.volume = value;
+        if (playerEffectSound != null) playerEffectSound.volume = value;
     }
 }

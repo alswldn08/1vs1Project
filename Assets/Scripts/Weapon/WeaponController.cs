@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WeaponController : MonoBehaviour
@@ -18,11 +16,14 @@ public class WeaponController : MonoBehaviour
         weapon.InitSetting();
         rifle = GetComponent<Rifle>();
         glock = GetComponent<Glock>();
-        weaponUI = FindObjectOfType<WeaponUI>();
-        player = FindObjectOfType<Player>();
+        weaponUI = GetComponent<WeaponUI>();
+        player = GetComponent<Player>();
         weapon.SetPlayer(player);
 
-        // UI �ʱ�ȭ
+        if (rifle != null) rifle.InitSetting();
+        if (glock != null) glock.InitSetting();
+
+        weaponUI.InitializeUI();
         weaponUI.UpdateWeapon(weapon);
     }
 

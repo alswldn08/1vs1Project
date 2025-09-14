@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum ProjectileType { Straight, Homing, QuadraticHoming, CubicHoming }
@@ -10,13 +11,13 @@ public class SkillEmission : MonoBehaviour
     [SerializeField] private float cooldownTime = 2f;
     [SerializeField] private GameObject[] bullets;
     [SerializeField] private Transform skillSpawnPoint;
-    [SerializeField] private Transform target;
 
     [SerializeField, Range(0f, 1f)]
     private float fireTiming = 0.8f;
 
     private int currentBulletIndex = 0;
     private float attackRate = 0.05f;
+    public Transform target;
 
     private Coroutine attackRoutine;
     public GameObject potal;
@@ -24,6 +25,9 @@ public class SkillEmission : MonoBehaviour
     private Animator bossAnim;
 
     public bool isDead = false; // 죽음 상태 체크
+
+    // 생성된 총알을 관리하기 위한 리스트
+    private List<GameObject> spawnedBullets = new List<GameObject>();
 
     void Start()
     {
@@ -46,30 +50,40 @@ public class SkillEmission : MonoBehaviour
         {
             attackRoutine = StartCoroutine(SkillRoutine());
             bossHP.bossUI.SetActive(true);
+            bossHP.SetUI();
         }
     }
 
     public void StopSkill()
     {
-        if (isDead) return; // 이미 죽었으면 처리하지 않음
+        if (isDead)
+        {
+            // 1. 생성된 모든 총알 삭제
+            foreach (var bullet in spawnedBullets)
+            {
+                if (bullet != null)
+                    Destroy(bullet);
+            }
+            
+        }
 
-        // 1. 코루틴 종료
+        // 2. 코루틴 종료
         if (attackRoutine != null)
         {
             StopCoroutine(attackRoutine);
 
             SoundManager.i.bgmSound.Stop();
+            spawnedBullets.Clear();
             SoundManager.i.PlayEffect(8);
             attackRoutine = null;
         }
 
-        bossAnim.SetTrigger("Death");          // 오직 Death 트리거만 켜기
+        // 3. 죽음 애니메이션 실행
+        bossAnim.SetTrigger("Death"); // 오직 Death 트리거만 켜기
 
-        // 3. 포탈 활성화
+        // 4. 포탈 활성화
         potal.SetActive(true);
     }
-
-
 
     private IEnumerator SkillRoutine()
     {
@@ -96,9 +110,9 @@ public class SkillEmission : MonoBehaviour
             // 5. 총알 발사
             for (currentBulletIndex = 0; currentBulletIndex < bulletCount; currentBulletIndex++)
             {
-                if (isDead) 
+                if (isDead)
                 {
-                    break; 
+                    break;
                 }
 
                 GameObject clone = Instantiate(
@@ -106,7 +120,11 @@ public class SkillEmission : MonoBehaviour
                     skillSpawnPoint.position,
                     Quaternion.identity
                 );
+
                 clone.GetComponent<BossPatternBase>().Setup(target, 1, bulletCount, currentBulletIndex);
+
+                // 생성된 총알 리스트에 추가
+                spawnedBullets.Add(clone);
 
                 yield return new WaitForSeconds(attackRate);
             }

@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static Unity.Collections.AllocatorManager;
 using UnityEngine.UI;
 
 public class WeaponUI : MonoBehaviour
@@ -14,8 +11,9 @@ public class WeaponUI : MonoBehaviour
 
     void Start()
     {
-        rifle = FindObjectOfType<Rifle>();
-        glock = FindObjectOfType<Glock>();
+        rifle = GetComponent<Rifle>();
+        glock = GetComponent<Glock>();
+
         InitializeUI();
     }
 

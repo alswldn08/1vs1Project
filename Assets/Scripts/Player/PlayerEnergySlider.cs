@@ -1,17 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 
 public class PlayerEnergySlider : MonoBehaviour
 {
-    public Slider energy;
-    public Image fillColor; //슬라이더 색상 이미지
-    private Color targetColor;
-
     private Player player;
+
+    public Slider energy;
+    public Text countEnergy;
+    //public Image fillColor; //슬라이더 색상 이미지
+    //private Color targetColor;
+
 
     void Start()
     {
@@ -24,25 +23,26 @@ public class PlayerEnergySlider : MonoBehaviour
 
     private void Update()
     {
-
-        if(energy.value < energy.maxValue)
+        if (energy.value < energy.maxValue)
         {
             player.playerEnergy += 10f * Time.deltaTime;
         }
-        else if(player.playerEnergy > energy.maxValue)
+        else if (player.playerEnergy > energy.maxValue)
         {
             player.playerEnergy = energy.maxValue;
         }
 
-        if (energy.value < 20f)
-        {
-            targetColor = Color.red;
-        }
-        else
-        {
-            targetColor = new Color(1f, 0.6f, 0.2f);
-        }
         energy.value = player.playerEnergy;
-        fillColor.color = Color.Lerp(fillColor.color, targetColor, Time.deltaTime * 5f);
+        countEnergy.text = energy.value.ToString("0") + "/" + energy.maxValue.ToString("0");
+
+        //if (energy.value < 20f)
+        //{
+        //    targetColor = Color.red;
+        //}
+        //else
+        //{
+        //    targetColor = new Color(1f, 0.6f, 0.2f);
+        //}
+        //fillColor.color = Color.Lerp(fillColor.color, targetColor, Time.deltaTime * 5f);
     }
 }

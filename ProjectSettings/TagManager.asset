@@ -12,6 +12,11 @@ TagManager:
   - Obstacle
   - BossBullet
   - BulletDestroyer
+  - ManaSprite
+  - HealthSprite
+  - SpawnPoint
+  - BGMSlider
+  - EffectSlider
   layers:
   - Default
   - TransparentFX

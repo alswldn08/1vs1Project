@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class MoveSceneManager : MonoBehaviour
@@ -24,18 +21,27 @@ public class MoveSceneManager : MonoBehaviour
     public void MoveTitle()
     {
         SceneManager.LoadScene("Title");
+        SoundManager.i.PlayBGM(0);
     }
     public void MoveScene1()
     {
         SceneManager.LoadScene("Stage1");
+        SoundManager.i.PlayBGM(2);
     }
     public void MoveScene2()
     {
         SceneManager.LoadScene("Stage2");
+        SoundManager.i.PlayBGM(3);
     }
     public void MoveScene3()
     {
         SceneManager.LoadScene("Stage3");
+        SoundManager.i.PlayBGM(4);
+    }
+    public void MoveScene4()
+    {
+        SceneManager.LoadScene("EndingScene");
+        SoundManager.i.PlayBGM(6);
     }
 
     //private void OnTriggerEnter2D(Collider2D collision)

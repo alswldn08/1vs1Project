@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using System.Collections;
 public class EnemyMovement : MonoBehaviour
 {
     public static EnemyMovement i { get; private set; }
@@ -138,11 +138,23 @@ public class EnemyMovement : MonoBehaviour
         Gizmos.DrawLine(new Vector3(leftBoundaryX, transform.position.y - 1f, 0), new Vector3(leftBoundaryX, transform.position.y + 1f, 0));
         Gizmos.DrawLine(new Vector3(rightBoundaryX, transform.position.y - 1f, 0), new Vector3(rightBoundaryX, transform.position.y + 1f, 0));
     }
+    private IEnumerator DamageEffect(Color dam)
+    {
+        spriteRenderer.color = dam;
+
+        yield return new WaitForSeconds(0.1f);
+
+        spriteRenderer.color = Color.white;
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        Color damaged = new Color(255f / 255f, 70f / 255f, 70f / 255f);
+
         if (collision.gameObject.CompareTag("Bullet"))
         {
+            StartCoroutine(DamageEffect(damaged));
+
             if (gameObject.name == "Mushroom")
             {
                 SoundManager.i.PlayEffect(1);

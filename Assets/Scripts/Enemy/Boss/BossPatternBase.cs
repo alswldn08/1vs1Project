@@ -1,17 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
 public abstract class BossPatternBase : MonoBehaviour
 {
     [SerializeField]
     private GameObject hitEffect;
-    protected BossMovement bossMovement;
+    public BossMovement bossMovement;
 
     public virtual void Setup(Transform target, float damage, int maxCount = 1, int index = 0)
     {
-        bossMovement = GetComponent<BossMovement>();
+        bossMovement = FindObjectOfType<BossMovement>();
     }
 
     private void Update()
