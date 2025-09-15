@@ -4935,6 +4935,7 @@ GameObject:
   - component: {fileID: 1110081972}
   - component: {fileID: 1110081971}
   - component: {fileID: 1110081973}
+  - component: {fileID: 1110081974}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -5039,6 +5040,23 @@ MonoBehaviour:
   m_MaximumFOV: 60
   m_MinimumOrthoSize: 1
   m_MaximumOrthoSize: 5000
+--- !u!114 &1110081974
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1110081968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+  m_PivotOffset: {x: 0, y: 0, z: 0}
+  m_AmplitudeGain: 0
+  m_FrequencyGain: 0
+  mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &1116867177
 GameObject:
   m_ObjectHideFlags: 0
@@ -15327,6 +15345,7 @@ GameObject:
   - component: {fileID: 1805696930}
   - component: {fileID: 1805696929}
   - component: {fileID: 1805696928}
+  - component: {fileID: 1805696931}
   m_Layer: 0
   m_Name: Virtual Main Camera
   m_TagString: Untagged
@@ -15405,6 +15424,18 @@ Transform:
   - {fileID: 971595216}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1805696931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1805696927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d202ba57f058aa48b4e8c641cb68af6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1829033104
 GameObject:
   m_ObjectHideFlags: 0

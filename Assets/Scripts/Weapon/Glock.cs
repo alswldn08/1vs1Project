@@ -12,7 +12,7 @@ public class Glock : Weapon
     }
     public override void InitSetting()
     {
-        data.maxBullet = 7;
+        data.maxBullet = 12;
         data.reloadTime = 1;
         data.isReloading = false;
 

@@ -212,8 +212,18 @@ public class Player : MonoBehaviour
         Color damaged = new Color(255f / 255f, 70f / 255f, 70f / 255f);
         StartCoroutine(DamageEffect(damaged));
         StartCoroutine(playerHpSlider.Damaged());
+        if (CinemachineShake.Instance == null)
+        {
+            Debug.LogError("CinemachineShake.Instance is NULL!");
+        }
+        else
+        {
+            CinemachineShake.Instance.ShakeCamera(3f, 0.2f);
+        }
         SoundManager.i.PlayPlayerEffect(1);
+
     }
+
 
     private void HandleHeal(float heal)
     {
