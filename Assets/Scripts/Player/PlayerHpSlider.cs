@@ -40,7 +40,7 @@ public class PlayerHpSlider : MonoBehaviour
     {
         float duration = 0.25f;
         float elapsed = 0f;
-        float targetAlpha = 15f / 255f; // 알파 15
+        float targetAlpha = 25f / 255f; // 알파 15
 
         // Fade In
         while (elapsed < duration)
