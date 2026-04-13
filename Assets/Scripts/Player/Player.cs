@@ -31,6 +31,12 @@ public class Player : MonoBehaviour
     [SerializeField] private float dashCooldown = 1f;
     [SerializeField] private float dashCooldownTimer = 0f;
 
+    // --- 새로 추가된 잔상(Trail) 설정 ---
+    [Header("Dash Trail")]
+    [SerializeField] private float ghostDelay = 0.02f; // 잔상이 생성되는 간격
+    [SerializeField] private float ghostLifeTime = 0.3f; // 잔상이 사라지는 데 걸리는 시간
+    [SerializeField] private Color ghostColor = new Color(1f, 1f, 1f, 0.5f); // 잔상의 색상 및 초기 투명도
+
     [Header("Interface")]
     public float playerHp = 100f;
     public float playerEnergy = 100f;
@@ -190,7 +196,54 @@ public class Player : MonoBehaviour
         dashTimer = dashTime;
         dashCooldownTimer = dashCooldown;
         playerEnergy -= 20f;
-        ChangeAnimation(4, dashTime, true); // 대시
+
+        // ChangeAnimation(4, dashTime, true); // <--- 애니메이션 대시 제거됨
+        StartCoroutine(DashTrailRoutine()); // <--- 잔상 코루틴 시작
+    }
+
+    // --- 잔상(Trail) 생성 코루틴 ---
+    private IEnumerator DashTrailRoutine()
+    {
+        while (isDash) // 대시 중일 때만 반복
+        {
+            CreateGhost();
+            yield return new WaitForSeconds(ghostDelay);
+        }
+    }
+
+    // --- 단일 잔상 객체 생성 ---
+    private void CreateGhost()
+    {
+        GameObject ghostObj = new GameObject("DashGhost");
+        ghostObj.transform.position = transform.position;
+        ghostObj.transform.rotation = transform.rotation;
+        ghostObj.transform.localScale = transform.localScale; // 방향 전환 대응
+
+        SpriteRenderer ghostSprite = ghostObj.AddComponent<SpriteRenderer>();
+        ghostSprite.sprite = playerSprite.sprite; // 현재 플레이어의 프레임 복사
+        ghostSprite.color = ghostColor;
+        ghostSprite.sortingLayerID = playerSprite.sortingLayerID;
+        ghostSprite.sortingOrder = playerSprite.sortingOrder - 1; // 플레이어보다 뒤에 그려지게 설정
+
+        StartCoroutine(FadeGhost(ghostSprite, ghostObj));
+    }
+
+    // --- 잔상이 서서히 투명해지며 사라지는 처리 ---
+    private IEnumerator FadeGhost(SpriteRenderer sr, GameObject obj)
+    {
+        float elapsed = 0f;
+        Color startColor = sr.color;
+
+        while (elapsed < ghostLifeTime)
+        {
+            elapsed += Time.deltaTime;
+            // 알파값을 점진적으로 0으로 만듦
+            float alpha = Mathf.Lerp(startColor.a, 0f, elapsed / ghostLifeTime);
+            sr.color = new Color(startColor.r, startColor.g, startColor.b, alpha);
+            yield return null;
+        }
+
+        Destroy(obj); // 페이드 아웃이 끝나면 잔상 오브젝트 파괴
     }
 
     private IEnumerator DamageEffect(Color dam)
@@ -221,9 +274,7 @@ public class Player : MonoBehaviour
             CinemachineShake.Instance.ShakeCamera(3f, 0.2f);
         }
         SoundManager.i.PlayPlayerEffect(1);
-
     }
-
 
     private void HandleHeal(float heal)
     {
